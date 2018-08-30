@@ -1,0 +1,149 @@
+
+.stats-card-component.days1 .header, .stats-card-component.days1 .sub-header {
+	background: linear-gradient(45deg, #743bdf 0%, #318cf3 100%);
+}
+
+.stats-card-component .header {
+	display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 15px 10px 15px 20px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+
+.stats-card-component .sub-header {
+	display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 15px 15px 10px 15px;
+}
+
+.stats-card-component .header .date {
+	font-size: 12px;
+    background: #fff;
+    border-radius: 4px;
+    padding: 3px 10px;
+}
+
+.stats-card-component .header h1 {
+	margin: 0;
+    font-size: 25px;
+    color: #fff;
+}
+
+.stats-card-component .sub-header .item p {
+	margin: 0;
+    color: #fff;
+}
+
+.stats-card-component .sub-header .item .name {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.stats-card-component .sub-header .item.ordered-sales {
+	display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+}
+
+.stats-card-component .body table tr td {
+	padding: 13px 15px 12px 15px;
+    border: 2px solid #f7f7f7;
+}
+
+
+.stats-card-component .body table .item.refunds .value {
+	color: #de0000;
+}
+.stats-card-component .body table .item.promo .value,
+.stats-card-component .body table .item.organic .value, 
+.stats-card-component .body table .item.ppc .value {
+	color: #2b77ff;
+}
+
+.stats-card-component .body table .item .value span {
+	font-size: 11px;
+    color: #000;	
+}
+
+.stats-card-component .body table .item.estimated-profit .value, .stats-card-component .body table .item.net-roi .value, .stats-card-component .body table .item.net-margin .value {
+	color: #0db700;
+}
+
+.card-content-md {
+	padding: 0;
+}
+
+.stats-card-component .body table {
+	width: 100%;
+    border-collapse: collapse;
+    border-style: hidden;
+}
+
+.stats-card-component.days7 .header, .stats-card-component.days7 .sub-header {
+	background: linear-gradient(135deg, #fe8420 0%, #ffc43a 100%);
+}
+
+.stats-card-component.days14 .header, .stats-card-component.days14 .sub-header {
+	background: linear-gradient(135deg, #94250f 0%, #d22806 100%);
+}
+.stats-card-component.days30 .header, .stats-card-component.days30 .sub-header {
+	background: linear-gradient(135deg, #249d3a 0%, #06d22b 100%);
+}
+
+
+.slick-slide {
+	opacity: 0.6;
+}
+.slick-current {
+	opacity: 1 !important;
+}
+.slick-dots li button:before  {
+	font-size: 50px !important;
+}
+
+.slick-dots li {
+	display: none;
+}
+
+.slick-list {
+	margin-left: -20px;
+}
+
+.page-title {
+	padding-left: 30px;
+}
+
+.myCarousel2 {
+	display: none !important;
+}
+
+.myCarousel {
+	display: none !important;
+}
+
+.myCarousel.slick-initialized.slick-slider.slick-dotted {
+	display: block !important;
+}
+
+
+.myCarousel2.slick-initialized.slick-slider.slick-dotted {
+	display: block !important;
+}

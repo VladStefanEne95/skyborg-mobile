@@ -1,0 +1,36 @@
+export class Order {
+    _id: string;
+    SellerOrderId: string;
+    ShipmentServiceLevelCategory: string;
+    IsPrime: boolean;
+    ShippingAddress: any;
+    PaymentMethod: string;
+    FulfillmentChannel: string;
+    MarketplaceId: string;
+    EarliestShipDate: string;
+    IsPremiumOrder: boolean;
+    OrderTotal: any;
+    BuyerName: string;
+    NumberOfItemsUnshipped: number;
+    IsBusinessOrder: boolean;
+    SalesChannel: string;
+    OrderStatus: string;
+    ShipServiceLevel: string;
+    carrier: string;
+    trackingNumber: string;
+    estimatedArrivalDate: Date;
+    NumberOfItemsShipped: number;
+    LastUpdateDate: Date;
+    PurchaseDate: Date;
+    LatestShipDate: Date;
+    IsReplacementOrder: boolean;
+    BuyerEmail: string;
+    AmazonOrderId: string;
+    OrderType: string;
+    tasks: any;
+    promotion: any;
+    orderItems: any;
+    organizationId: string;
+    updatedAt: Date;
+    createdAt: Date;
+}

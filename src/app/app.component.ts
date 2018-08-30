@@ -3,8 +3,13 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { LoginPage } from '../pages/login/login';
+import { CarouselPage } from '../pages/carousel/carousel';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { DashboardPage } from '../pages/dashboard/dashboard';
+
+import { Storage } from '@ionic/storage';
 
 @Component({
   templateUrl: 'app.html'
@@ -12,16 +17,25 @@ import { ListPage } from '../pages/list/list';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = LoginPage;
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public storage: Storage) {
     this.initializeApp();
 
+	// let self = this;
+	// storage.get("loggedIn").then(val => {
+	// 	if (val === true)
+	// 		self.rootPage = DashboardPage;
+	// 	else
+	// 		self.rootPage = LoginPage;
+	// })
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
+	  { title: 'Home', component: HomePage },
+	  { title: 'Dashboard', component: DashboardPage },
+	  { title: 'Login', component: LoginPage },
       { title: 'List', component: ListPage }
     ];
 
