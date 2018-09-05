@@ -1,4 +1,4 @@
-import { Component, Input, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ProductDetails, StatType, Stat, StatsResponse, StatsRequestDate } from '../../models/dashboard/dashboardTypes';
 import { DateRange, DateRangeType } from '../date-filter/date-range.interface';
@@ -17,10 +17,10 @@ import { DashboardFilterProvider } from '../../providers/dashboard-filter/dashbo
 
 @IonicPage()
 @Component({
-  selector: 'page-dashboard',
-  templateUrl: 'dashboard.html',
+  selector: 'page-dashboard-new',
+  templateUrl: 'dashboard-new.html',
 })
-export class DashboardPage {
+export class DashboardNewPage {
 
 	category = 'Dashboard';
     dateToday: DateRange = {
@@ -34,58 +34,22 @@ export class DashboardPage {
     statsExpanded = false;
     productDetails: Array<ProductDetails> = [];
     chartData: Object;
-	chartPointData: Object;
-	counter = 0;
-	counterArr = [0, 1];
-	
-	@ViewChildren('statsList') things: QueryList<any>;
+    chartPointData: Object;
 
-  constructor (
+  constructor(
 	public navCtrl: NavController,
 	public navParams: NavParams, 
 	public UserProvider: UserProvider, 
 	public storage: Storage, 
 	public OrderProvider: OrderProvider,
 	public ProgressBarProvider: ProgressBarProvider,
-	public DashboardFilterProvider: DashboardFilterProvider,
-	public cdRef:ChangeDetectorRef) {
+	public DashboardFilterProvider: DashboardFilterProvider) {
 	
 		const date = <DateRange>{ intervalType: DateRangeType.Today, title: 'Today', start: undefined, end: undefined };
 		this.onFilterChanged(date);
+  
 }
 
-  ngAfterViewInit() {
-    this.things.changes.subscribe(t => {
-      this.ngForRendred();
-    })
-  }
-
-  ngForRendred() {
-	console.log('NgFor is Rendered');
-	this.counter++;
-	if (this.counter == this.stats.length && this.counter < 6) {
-		console.log(this.counterArr);
-		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('unslick');
-		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).css("display", "block")
-		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).css("display", "none")
-		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick({
-			dots: true,
-			centerMode: true,
-			infinite: false,
-			centerPadding: '30px',
-			slidesToShow: 1
-		  });
-		//   this.stats.push(JSON.parse(JSON.stringify(this.stats[0])));
-		//   this.counterArr.push(this.counterArr[this.counterArr.length - 1] + 1);
-	}
-  }
-
-  getCarouselVisibility(index) {
-	  if (index == this.counterArr.length - 1)
-		return "showCarousel"
-	  else
-		return "hideCarousel"
-  }
 
 
 getTitleColor(index) {
@@ -105,7 +69,7 @@ getTitleColor(index) {
 }
 
 ionViewDidLoad() {
-    $('.myCarousel0').slick({
+    $('.myCarousel').slick({
       dots: true,
       centerMode: true,
       infinite: false,
@@ -126,6 +90,18 @@ ionViewDidLoad() {
 	this.OrderProvider.getOrderProductSales(sortType, by)
 		.then(products => {
 			this.productDetails = products;
+			console.log("produse",products);
+			setTimeout(function(){
+				$('.myCarousel').slick('unslick');
+				$('.myCarousel2').slick({
+					dots: true,
+					centerMode: true,
+					infinite: false,
+					centerPadding: '30px',
+					slidesToShow: 1
+				  });
+			} 
+			, 3000 );
 		}, err => {
 			console.error('Error on get products request: ', err);
 		});

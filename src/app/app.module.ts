@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { DashboardPage } from '../pages/dashboard/dashboard';
+import { DashboardNewPage } from '../pages/dashboard-new/dashboard-new';
 import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
 import { CarouselPage } from '../pages/carousel/carousel';
@@ -28,6 +29,7 @@ import { StorageProvider } from '../providers/storage/storage';
 	HomePage,
 	LoginPage,
 	CarouselPage,
+	DashboardNewPage,
 	DashboardPage,
     ListPage
   ],
@@ -45,6 +47,7 @@ import { StorageProvider } from '../providers/storage/storage';
 	HomePage,
 	CarouselPage,
 	DashboardPage,
+	DashboardNewPage,
 	LoginPage,
     ListPage
   ],

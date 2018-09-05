@@ -1,6 +1,6 @@
-page-dashboard {
-	.stats-card-component.days1 .header, .stats-card-component.days1 .sub-header {
-		background: linear-gradient(45deg, #743bdf 0%, #318cf3 100%);
+page-dashboard-new {
+	.stats-card-component.days1 {
+	border-top: 4px solid #318cf3;
 	}
 
 	.stats-card-component .header {
@@ -27,11 +27,8 @@ page-dashboard {
 		padding: 15px 15px 10px 15px;
 	}
 
-	.stats-card-component .header .date {
+ 	.date {
 		font-size: 12px;
-		background: #fff;
-		border-radius: 4px;
-		padding: 3px 10px;
 	}
 
 	.stats-card-component .header h1 {
@@ -65,25 +62,27 @@ page-dashboard {
 
 	.stats-card-component .body table tr td {
 		padding: 13px 15px 12px 15px;
-		border: 2px solid #f7f7f7;
 	}
 
 
-	.stats-card-component .body table .item.refunds .value {
+	.body table .name.orders,
+	.body table .name.units {
+		color: #949494;
+	}
+
+	.body table .item.refunds .value {
 		color: #de0000;
 	}
-	.stats-card-component .body table .item.promo .value,
-	.stats-card-component .body table .item.organic .value, 
-	.stats-card-component .body table .item.ppc .value {
+	 .body table .name.revenue {
 		color: #2b77ff;
 	}
 
-	.stats-card-component .body table .item .value span {
+	.body table .item .value span {
 		font-size: 11px;
 		color: #000;	
 	}
 
-	.stats-card-component .body table .item.estimated-profit .value, .stats-card-component .body table .item.net-roi .value, .stats-card-component .body table .item.net-margin .value {
+	.body table .profit.name {
 		color: #0db700;
 	}
 
@@ -97,17 +96,25 @@ page-dashboard {
 		border-style: hidden;
 	}
 
-	.stats-card-component.days7 .header, .stats-card-component.days7 .sub-header {
-		background: linear-gradient(135deg, #fe8420 0%, #ffc43a 100%);
+	.card-header {
+		background-color: #FAFAFA;
+		border-bottom: 1px solid #e0e0e0;
 	}
 
-	.stats-card-component.days14 .header, .stats-card-component.days14 .sub-header {
-		background: linear-gradient(135deg, #94250f 0%, #d22806 100%);
-	}
-	.stats-card-component.days30 .header, .stats-card-component.days30 .sub-header {
-		background: linear-gradient(135deg, #249d3a 0%, #06d22b 100%);
+	.stats-card-component.days7  {
+		border-top: 4px solid #FF8D2B;
 	}
 
+	.stats-card-component.days14 {
+		border-top: 4px solid #94250f;
+	}
+	.stats-card-component.days30 {
+		border-top: 4px solid #249d3a;
+	}
+
+	.name {
+		font-weight: 600;
+	}
 
 	.slick-slide {
 		opacity: 0.6;
@@ -131,20 +138,20 @@ page-dashboard {
 		padding-left: 30px;
 	}
 
-
-	.myCarousel1 {
+	.myCarousel2 {
 		display: none !important;
 	}
 
-	.myCarousel0 {
+	.myCarousel {
 		display: none !important;
 	}
 
-	.myCarousel0.slick-initialized.slick-slider.slick-dotted {
+	.myCarousel.slick-initialized.slick-slider.slick-dotted {
 		display: block !important;
 	}
 
-	.myCarousel1.slick-initialized.slick-slider.slick-dotted {
+
+	.myCarousel2.slick-initialized.slick-slider.slick-dotted {
 		display: block !important;
 	}
 }

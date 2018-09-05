@@ -9,9 +9,8 @@
 
 
 <ion-content>
-<h1 class="page-title">Dashboard</h1>
-<div class="myCarousel">
-	<ng-container *ngFor="let stat of stats;let i = index">
+<div  *ngFor="let countElem of counterArr" class="myCarousel{{countElem}}">
+	<ng-container #statsList *ngFor="let stat of stats;let i = index">
 		<ion-card class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
 			
 			<ion-card-header class="header">
@@ -98,7 +97,7 @@
 	</ng-container>
 </div>
 
-
+<!--
 <div class="myCarousel2">
 	<ng-container *ngFor="let stat of stats;let i = index">
 		<ion-card class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
@@ -186,6 +185,6 @@
 		</ion-card>
 	</ng-container>
 </div>
-
+-->
 
 </ion-content>

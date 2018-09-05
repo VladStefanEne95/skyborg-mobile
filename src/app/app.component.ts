@@ -8,6 +8,7 @@ import { CarouselPage } from '../pages/carousel/carousel';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { DashboardPage } from '../pages/dashboard/dashboard';
+import { DashboardNewPage } from '../pages/dashboard-new/dashboard-new';
 
 import { Storage } from '@ionic/storage';
 

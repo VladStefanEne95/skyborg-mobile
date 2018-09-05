@@ -1,0 +1,94 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Dashboard</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+<div class="myCarousel">
+	<ng-container *ngFor="let stat of stats;let i = index">
+		<ion-card class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
+			
+			<ion-card-header>
+				<h1>{{stat.title.dateName}}</h1>
+				<div class="date">{{stat.title?.dateRange}}</div>
+			</ion-card-header>
+			
+			<ion-card-content>
+				
+			</ion-card-content>
+
+			<ion-card-content class="body">
+				<table>
+					<tbody>
+						<tr>
+							<td>
+								<p class="name orders">Orders</p>
+								<p class="value">{{ stat.orders?.total }}</p>
+							</td>
+							<td>
+								<p class="name units">Units</p>
+								<p class="value">{{ stat.units?.total }}</p>
+							</td>
+							<td>
+								<p class="name revenue">Revenue</p>
+								<p class="value">{{ stat.summary?.grossSales | currency }}</p>
+							</td>
+							<td>
+								<p class="name profit">Profit</p>
+								<p class="value">{{ stat.summary?.estProfit | currency }}</p>
+								</td>
+						</tr>		
+					</tbody>
+				</table>
+			</ion-card-content>
+		</ion-card>
+	</ng-container>
+</div>
+
+<div class="myCarousel2">
+		<ng-container *ngFor="let stat of stats;let i = index">
+			<ion-card class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
+				
+				<ion-card-header>
+					<h1>{{stat.title.dateName}}</h1>
+					<div class="date">{{stat.title?.dateRange}}</div>
+				</ion-card-header>
+				
+				<ion-card-content>
+					
+				</ion-card-content>
+	
+				<ion-card-content class="body">
+					<table>
+						<tbody>
+							<tr>
+								<td>
+									<p class="name orders">Orders</p>
+									<p class="value">{{ stat.orders?.total }}</p>
+								</td>
+								<td>
+									<p class="name units">Units</p>
+									<p class="value">{{ stat.units?.total }}</p>
+								</td>
+								<td>
+									<p class="name revenue">Revenue</p>
+									<p class="value">{{ stat.summary?.grossSales | currency }}</p>
+								</td>
+								<td>
+									<p class="name profit">Profit</p>
+									<p class="value">{{ stat.summary?.estProfit | currency }}</p>
+									</td>
+							</tr>		
+						</tbody>
+					</table>
+				</ion-card-content>
+			</ion-card>
+		</ng-container>
+	</div>
+
+</ion-content>

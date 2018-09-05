@@ -84,7 +84,6 @@ export class UserProvider {
 				'Skyborg-Marketplace': this.marketplace,
 			});
 			const token = 'Bearer ' + this.token.access_token;
-			console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			this.newHeaders = {
 				'Content-Type': 'application/json',
 				'Authorization': token,
