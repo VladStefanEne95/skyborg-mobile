@@ -63,8 +63,7 @@ export class DashboardPage {
   ngForRendred() {
 	console.log('NgFor is Rendered');
 	this.counter++;
-	if (this.counter == this.stats.length && this.counter < 6) {
-		console.log(this.counterArr);
+	if (this.counter == this.stats.length) {
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('unslick');
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).css("display", "block")
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).css("display", "none")
@@ -78,13 +77,6 @@ export class DashboardPage {
 		//   this.stats.push(JSON.parse(JSON.stringify(this.stats[0])));
 		//   this.counterArr.push(this.counterArr[this.counterArr.length - 1] + 1);
 	}
-  }
-
-  getCarouselVisibility(index) {
-	  if (index == this.counterArr.length - 1)
-		return "showCarousel"
-	  else
-		return "hideCarousel"
   }
 
 
