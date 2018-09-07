@@ -22,7 +22,7 @@ export class StatsProvider {
 
 	getStatsbyDate$(beginDate: number, endDate: number, inSeconds: boolean = false, sku?: string): Observable<any> {
 		const url = `${this.url}beginDate:${beginDate}|endDate:${endDate}|timeSet:${inSeconds ? 'ms' : 's'}`;
-		const httpHeaders = new HttpHeaders(this.UserProvider.getNewHeaders())
+		const httpHeaders = new HttpHeaders(this.UserProvider.getNewHeaders()) 
 			.set('observe', 'response');
 		
 		return this.http.get<StatsResponse>(url, { headers: httpHeaders })

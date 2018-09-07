@@ -147,4 +147,14 @@ page-dashboard {
 	.myCarousel1.slick-initialized.slick-slider.slick-dotted {
 		display: block !important;
 	}
+
+	.card-md p {
+		font-size: 1.3rem;
+		line-height: 1.4;
+	}
+
+	.slick-slide {
+		padding: 0 5px;
+	  }
+
 }

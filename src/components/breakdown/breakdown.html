@@ -1,0 +1,56 @@
+<!-- Generated template for the BreakdownComponent component -->
+<div>
+
+
+		<ion-card>
+			<button class="accordion withChildren"><span class="button-left accordion-title">Revenue</span> <span class="button-right"> {{ data?.grossSales | currency }}</span></button>
+			<div class="panel">
+					<div class="accordion-row">
+						<p class="accordion-row-left">Organic</p>
+						<p class="accordion-row-right">{{ data?.grossSales | currency }}</p>
+					</div>
+					<div class="accordion-row">
+							<p class="accordion-row-left">PPC</p>
+							<p class="accordion-row-right">TO DO</p>
+						</div>
+			</div>
+		</ion-card>
+		
+		<ion-card>
+			<button class="accordion withChildren"><span class="button-left accordion-title">Costs</span><span class="button-right">  {{ data?.costsAmount + data?.feesAmount + data?.taxesAmount | currency }}</span></button>
+			<div class="panel">
+				<div class="accordion-row">
+					<p class="accordion-row-left">Costs of Goods</p>
+					<p class="accordion-row-right">{{ data?.costsAmount | currency }}</p>
+				</div>
+				<div class="accordion-row">
+					<p class="accordion-row-left">Amazon Fees</p>
+					<p class="accordion-row-right">{{ data?.feesAmount | currency }}</p>
+				</div>
+				<div class="accordion-row">
+					<p class="accordion-row-left">Taxes</p>
+					<p class="accordion-row-right">{{ data?.taxesAmount | currency }}</p>
+				</div>
+				<div class="accordion-row">
+					<p class="accordion-row-left">PPC Costs</p>
+					<p class="accordion-row-right">TO DO</p>
+				</div>
+			</div>
+		</ion-card>
+		
+		<ion-card>
+			<button class="accordion"><span class="button-left accordion-title">Profit</span><span class="button-right">{{ data?.netAmount | currency }}</span></button>
+		</ion-card>
+
+		<ion-card>
+			<button class="accordion"><span class="button-left accordion-title">Units</span><span class="button-right">{{ data?.totalItems | currency }}</span></button>
+		</ion-card>
+
+
+
+	
+
+
+
+
+</div>

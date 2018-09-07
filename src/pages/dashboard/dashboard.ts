@@ -1,4 +1,4 @@
-import { Component, Input, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, ViewChildren, ElementRef, ViewChild, QueryList, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ProductDetails, StatType, Stat, StatsResponse, StatsRequestDate } from '../../models/dashboard/dashboardTypes';
 import { DateRange, DateRangeType } from '../date-filter/date-range.interface';
@@ -6,6 +6,7 @@ import { UserProvider } from '../../providers/user/user';
 import * as moment from 'moment';
 import { LoginPage } from '../login/login';
 import { Storage } from '@ionic/storage';
+import { Chart } from 'chart.js';
 
 import * as $ from "jquery";
 import 'slick-carousel/slick/slick'
@@ -55,13 +56,13 @@ export class DashboardPage {
 }
 
   ngAfterViewInit() {
+	this.monthToDateVsLastMonth();
     this.things.changes.subscribe(t => {
-      this.ngForRendred();
+//      this.ngForRendred();
     })
   }
 
   ngForRendred() {
-	console.log('NgFor is Rendered');
 	this.counter++;
 	if (this.counter == this.stats.length) {
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('unslick');
@@ -96,15 +97,15 @@ getTitleColor(index) {
 	}
 }
 
-ionViewDidLoad() {
-    $('.myCarousel0').slick({
-      dots: true,
-      centerMode: true,
-      infinite: false,
-      centerPadding: '30px',
-      slidesToShow: 1
-    });
-  }
+// ionViewDidLoad() {
+//     $('.myCarousel0').slick({
+//       dots: true,
+//       centerMode: true,
+//       infinite: false,
+//       centerPadding: '30px',
+//       slidesToShow: 1
+//     });
+//   }
 
   getProducts(sortType = undefined, by = undefined): void {
 	const defaultBy = [
@@ -122,6 +123,7 @@ ionViewDidLoad() {
 			console.error('Error on get products request: ', err);
 		});
 }
+
 
 monthToDateVsLastMonth() {
 	const lastMonth = () => {
@@ -144,6 +146,7 @@ monthToDateVsLastMonth() {
 			lastMonth: result[0].slice(1),
 			monthToDate: result[1].slice(1)
 		};
+		console.log(this.chartData);
 	})
 }
 
@@ -173,6 +176,7 @@ onFilterChanged(dateRange: DateRange) {
 	this.getProducts();
 
 }
+
 
 onToggleStats(): void {
 	this.statsExpanded = !this.statsExpanded;

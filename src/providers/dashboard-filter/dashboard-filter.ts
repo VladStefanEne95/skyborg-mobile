@@ -322,7 +322,6 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 makeRequest$(range: DateRange): Observable<any> {
 	const requestArray: StatsRequestDate[]  = this.processDateRange(range);
 
-	
 	const observableArray = requestArray.map( request => this.StatsProvider.getStatsbyDate$(request.startUnix, request.endUnix ));
 	let i = 0;
 	return Observable

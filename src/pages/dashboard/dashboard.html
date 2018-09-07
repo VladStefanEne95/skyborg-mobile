@@ -1,190 +1,102 @@
 
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>dashboard</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content>
-<div  *ngFor="let countElem of counterArr" class="myCarousel{{countElem}}">
-	<ng-container #statsList *ngFor="let stat of stats;let i = index">
-		<ion-card class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
-			
-			<ion-card-header class="header">
-				<h1>{{stat.title.dateName}}</h1>
-				<div class="date">{{stat.title?.dateRange}}</div>
-			</ion-card-header>
-			
-			<ion-card-content class="sub-header">
-				<div class="item">
-					<p class="name">Orders</p>
-					<p class="value">{{ stat.orders?.total }}
-						<span>TOTAL</span>
-					</p>
-				</div>
-				<div class="item">
-					<p class="name">Units</p>
-					<p class="value">{{ stat.units?.total }}
-						<span>TOTAL</span>
-					</p>
-				</div>
-				<div class="item ordered-sales">
-					<p class="name">Ordered product sales</p>
-					<p class="value">{{ stat.summary?.grossSales | currency }}</p>
-				</div>
-			</ion-card-content>
-
-			<ion-card-content class="body">
-				<table>
-					<tbody>
-						<tr>
-							<td>
-								<div class="item promo">
-									<p class="name">Promo</p>
-									<p class="value">{{ stat.units?.promos }}
-										<span>Units</span>
-									</p>
-								</div>
-							</td>
-							<td>
-								<div class="item refunds">
-									<p class="name">Refunds</p>
-									<p class="value">{{ stat.units?.refunds }}
-										<span>Units</span>
-									</p>
-								</div>
-							</td>
-							<td>
-								<div class="item organic">
-									<p class="name">Organic</p>
-									<p class="value">{{ stat.orders?.organic | currency }}</p>
-								</div>
-							</td>
-							<td>
-								<div class="item ppc">
-									<p class="name">Ppc</p>
-									<p class="value">{{ stat.orders?.ppc | currency }}</p>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div class="item estimated-profit">
-									<p class="name">Estimated Profit</p>
-									<p class="value">{{ stat.summary?.estProfit | currency }}</p>
-								</div>
-							</td>
-							<td>
-								<div class="item net-roi">
-									<p class="name">Net Roi</p>
-									<p class="value">{{ stat.summary?.roi }}%</p>
-								</div>
-							</td>
-							<td>
-								<div class="item net-margin">
-									<p class="name">Net Margin</p>
-									<p class="value">{{ stat.summary?.margin | currency }}</p>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</ion-card-content>
-		</ion-card>
-	</ng-container>
-</div>
-
-<!--
-<div class="myCarousel2">
-	<ng-container *ngFor="let stat of stats;let i = index">
-		<ion-card class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
-			
-			<ion-card-header class="header">
-				<h1>{{stat.title.dateName}}</h1>
-				<div class="date">{{stat.title?.dateRange}}</div>
-			</ion-card-header>
-			
-			<ion-card-content class="sub-header">
-				<div class="item">
-					<p class="name">Orders</p>
-					<p class="value">{{ stat.orders?.total }}
-						<span>TOTAL</span>
-					</p>
-				</div>
-				<div class="item">
-					<p class="name">Units</p>
-					<p class="value">{{ stat.units?.total }}
-						<span>TOTAL</span>
-					</p>
-				</div>
-				<div class="item ordered-sales">
-					<p class="name">Ordered product sales</p>
-					<p class="value">{{ stat.summary?.grossSales | currency }}</p>
-				</div>
-			</ion-card-content>
-
-			<ion-card-content class="body">
-				<table>
-					<tbody>
-						<tr>
-							<td>
-								<div class="item promo">
-									<p class="name">Promo</p>
-									<p class="value">{{ stat.units?.promos }}
-										<span>Units</span>
-									</p>
-								</div>
-							</td>
-							<td>
-								<div class="item refunds">
-									<p class="name">Refunds</p>
-									<p class="value">{{ stat.units?.refunds }}
-										<span>Units</span>
-									</p>
-								</div>
-							</td>
-							<td>
-								<div class="item organic">
-									<p class="name">Organic</p>
-									<p class="value">{{ stat.orders?.organic | currency }}</p>
-								</div>
-							</td>
-							<td>
-								<div class="item ppc">
-									<p class="name">Ppc</p>
-									<p class="value">{{ stat.orders?.ppc | currency }}</p>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div class="item estimated-profit">
-									<p class="name">Estimated Profit</p>
-									<p class="value">{{ stat.summary?.estProfit | currency }}</p>
-								</div>
-							</td>
-							<td>
-								<div class="item net-roi">
-									<p class="name">Net Roi</p>
-									<p class="value">{{ stat.summary?.roi }}%</p>
-								</div>
-							</td>
-							<td>
-								<div class="item net-margin">
-									<p class="name">Net Margin</p>
-									<p class="value">{{ stat.summary?.margin | currency }}</p>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</ion-card-content>
-		</ion-card>
-	</ng-container>
-</div>
--->
-
-</ion-content>
+		
+		  <ion-navbar>
+			<ion-title>dashboard</ion-title>
+		  </ion-navbar>
+		
+		</ion-header>
+		
+		
+		<ion-content>
+		<div  *ngFor="let countElem of counterArr" class="myCarousel{{countElem}}">
+			<ng-container #statsList *ngFor="let stat of stats;let i = index">
+				<ion-card class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
+					
+					<ion-card-header class="header">
+						<h1>{{stat.title.dateName}}</h1>
+						<div class="date">{{stat.title?.dateRange}}</div>
+					</ion-card-header>
+					
+					<ion-card-content class="sub-header">
+						<div class="item">
+							<p class="name">Orders</p>
+							<p class="value">{{ stat.orders?.total }}
+								<span>TOTAL</span>
+							</p>
+						</div>
+						<div class="item">
+							<p class="name">Units</p>
+							<p class="value">{{ stat.units?.total }}
+								<span>TOTAL</span>
+							</p>
+						</div>
+						<div class="item ordered-sales">
+							<p class="name">Ordered product sales</p>
+							<p class="value">{{ stat.summary?.grossSales | currency }}</p>
+						</div>
+					</ion-card-content>
+		
+					<ion-card-content class="body">
+						<table>
+							<tbody>
+								<tr>
+									<td>
+										<div class="item promo">
+											<p class="name">Promo</p>
+											<p class="value">{{ stat.units?.promos }}
+												<span>Units</span>
+											</p>
+										</div>
+									</td>
+									<td>
+										<div class="item refunds">
+											<p class="name">Refunds</p>
+											<p class="value">{{ stat.units?.refunds }}
+												<span>Units</span>
+											</p>
+										</div>
+									</td>
+									<td>
+										<div class="item organic">
+											<p class="name">Organic</p>
+											<p class="value">{{ stat.orders?.organic | currency }}</p>
+										</div>
+									</td>
+									<td>
+										<div class="item ppc">
+											<p class="name">Ppc</p>
+											<p class="value">{{ stat.orders?.ppc | currency }}</p>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<div class="item estimated-profit">
+											<p class="name">Estimated Profit</p>
+											<p class="value">{{ stat.summary?.estProfit | currency }}</p>
+										</div>
+									</td>
+									<td>
+										<div class="item net-roi">
+											<p class="name">Net Roi</p>
+											<p class="value">{{ stat.summary?.roi }}%</p>
+										</div>
+									</td>
+									<td>
+										<div class="item net-margin">
+											<p class="name">Net Margin</p>
+											<p class="value">{{ stat.summary?.margin | currency }}</p>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</ion-card-content>
+				</ion-card>
+			</ng-container>
+		</div>
+		<chart [data]="chartData" (chartPointData)="onChartPointDataChange($event)"></chart>
+		<breakdown [data]="chartPointData" [dateRange]="dateRange"></breakdown>
+		
+		</ion-content>

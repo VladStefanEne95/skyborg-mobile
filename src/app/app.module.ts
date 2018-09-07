@@ -11,7 +11,10 @@ import { DashboardPage } from '../pages/dashboard/dashboard';
 import { DashboardNewPage } from '../pages/dashboard-new/dashboard-new';
 import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
-import { CarouselPage } from '../pages/carousel/carousel';
+import { ChartComponent } from '../components/chart/chart';
+import { BreakdownComponent } from '../components/breakdown/breakdown';
+import { StatsCardComponent } from '../components/stats-card/stats-card';
+
 
 import { SlickModule } from 'ngx-slick';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -23,13 +26,17 @@ import { DashboardFilterProvider } from '../providers/dashboard-filter/dashboard
 import { StatsProvider } from '../providers/stats/stats';
 import { StorageProvider } from '../providers/storage/storage';
 
+
+
 @NgModule({
   declarations: [
     MyApp,
 	HomePage,
 	LoginPage,
-	CarouselPage,
+	ChartComponent,
+	BreakdownComponent,
 	DashboardNewPage,
+	StatsCardComponent,
 	DashboardPage,
     ListPage
   ],
@@ -45,7 +52,6 @@ import { StorageProvider } from '../providers/storage/storage';
   entryComponents: [
     MyApp,
 	HomePage,
-	CarouselPage,
 	DashboardPage,
 	DashboardNewPage,
 	LoginPage,
