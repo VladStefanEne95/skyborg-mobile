@@ -106,7 +106,7 @@ export class ChartComponent implements OnInit {
                         if (label) {
                             tooltipItem.xLabel = label;
                             label += ': ';
-                        }
+						}
                         label += tooltipItem.yLabel;
                         this.chartPointData.emit({event: 'chart-point-hovered', data: dataSource});
                         return label;

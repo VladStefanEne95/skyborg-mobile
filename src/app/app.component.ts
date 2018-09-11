@@ -37,7 +37,7 @@ export class MyApp {
 	  { title: 'Dashboard', component: DashboardPage },
 	  { title: 'Login', component: LoginPage },
       { title: 'List', component: ListPage }
-    ];
+	];
 
   }
 

@@ -5,7 +5,7 @@ import { Observable} from 'rxjs/Rx';
 import { map } from 'rxjs/operators/map';
 
 import {Stat, StatsRequestDate, StatType} from '../../models/dashboard/dashboardTypes';
-import { DateRange, DateRangeType} from '../../pages/date-filter/date-range.interface';
+import { DateRange, DateRangeType} from '../../components/date-filter/date-range.interface';
 import { StatsProvider } from '../stats/stats';
 
 

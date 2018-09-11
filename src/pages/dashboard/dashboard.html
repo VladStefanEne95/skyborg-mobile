@@ -1,11 +1,11 @@
-
 <ion-header>
-		
-		  <ion-navbar>
-			<ion-title>dashboard</ion-title>
-		  </ion-navbar>
-		
-		</ion-header>
+	<ion-navbar hideBackButton="true">
+	  <button class="toggleButton" ion-button menuToggle>
+		<ion-icon name="menu"></ion-icon>
+	  </button>
+	  <ion-title>Dashboard</ion-title>
+	</ion-navbar>
+  </ion-header>
 		
 		
 		<ion-content>
@@ -93,10 +93,10 @@
 							</tbody>
 						</table>
 					</ion-card-content>
-				</ion-card>
+				</ion-card>                                                               
 			</ng-container>
 		</div>
-		<chart [data]="chartData" (chartPointData)="onChartPointDataChange($event)"></chart>
-		<breakdown [data]="chartPointData" [dateRange]="dateRange"></breakdown>
-		
+		<chart [data]="chartData" *ngIf="chartState" (chartPointData)="onChartPointDataChange($event)"></chart>
+		<breakdown [data]="chartPointData" [hidden]="chartState" [dateRange]="dateRange" (showChart)="onShowChartChange($event)" ></breakdown>
+		<date-filter></date-filter>
 		</ion-content>

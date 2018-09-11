@@ -4,6 +4,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpClientModule } from '@angular/common/http'; 
 import { IonicStorageModule } from '@ionic/storage';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -14,6 +15,8 @@ import { LoginPage } from '../pages/login/login';
 import { ChartComponent } from '../components/chart/chart';
 import { BreakdownComponent } from '../components/breakdown/breakdown';
 import { StatsCardComponent } from '../components/stats-card/stats-card';
+import { DateFilterComponent } from '../components/date-filter/date-filter';
+import { SelectMarketplaceComponent } from '../components/select-marketplace/select-marketplace';
 
 
 import { SlickModule } from 'ngx-slick';
@@ -25,6 +28,7 @@ import { ProgressBarProvider } from '../providers/progress-bar/progress-bar';
 import { DashboardFilterProvider } from '../providers/dashboard-filter/dashboard-filter';
 import { StatsProvider } from '../providers/stats/stats';
 import { StorageProvider } from '../providers/storage/storage';
+import { CalendarModule } from "ion2-calendar";
 
 
 
@@ -35,18 +39,22 @@ import { StorageProvider } from '../providers/storage/storage';
 	LoginPage,
 	ChartComponent,
 	BreakdownComponent,
+	DateFilterComponent,
 	DashboardNewPage,
 	StatsCardComponent,
+	SelectMarketplaceComponent,
 	DashboardPage,
     ListPage
   ],
   imports: [
 	BrowserModule,
 	CommonModule,
+	BrowserAnimationsModule,
 	SlickModule.forRoot(),
 	HttpClientModule,
 	IonicStorageModule.forRoot(),
-    IonicModule.forRoot(MyApp),
+	IonicModule.forRoot(MyApp),
+	CalendarModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

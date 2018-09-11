@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ProductDetails, StatType, Stat, StatsResponse, StatsRequestDate } from '../../models/dashboard/dashboardTypes';
-import { DateRange, DateRangeType } from '../date-filter/date-range.interface';
+import { DateRange, DateRangeType } from '../../components/date-filter/date-range.interface';
 import { UserProvider } from '../../providers/user/user';
 import * as moment from 'moment';
 import { LoginPage } from '../login/login';

@@ -47,7 +47,7 @@ export class UserProvider {
     private loginURL = AppConfig.ServiceBase + '/oauth/token/';  // URL to web api
 	
 
-  constructor(public http: HttpClient, private storage: Storage) {
+  constructor(public http: HttpClient, public storage: Storage) {
 
     console.log('Hello UserProvider Provider');
 
@@ -185,7 +185,28 @@ export class UserProvider {
             }
         }
 	}
+
+
+	changeMarketplace(marketplace) {
+        this.setMarketplace(marketplace);
+        location.reload();
+    }
+
+	setMarketplace(marketplace): void {
+        this.storage.set('marketplace', marketplace.id);
+        this.marketplace = marketplace.id;
+    }
 	
+	getMarketplace(): Promise<string> {
+		return new Promise((resolve, reject) => {
+			this.storage.get('marketplace').then(val => {
+				if (val)
+					resolve(val);
+				else
+					resolve(null);
+			})
+		})
+	}
 	
 
 	setOrganization(organization): void {

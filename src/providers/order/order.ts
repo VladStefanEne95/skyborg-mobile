@@ -5,7 +5,7 @@ import { UserProvider } from "../user/user";
 import * as isDefined from 'check-defined';
 
 import { Order } from '../../models/order/order';
-import { DateRange } from '../../pages/date-filter/date-range.interface';
+import { DateRange } from '../../components/date-filter/date-range.interface';
 
 @Injectable()
 export class OrderProvider {
