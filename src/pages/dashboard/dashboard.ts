@@ -70,7 +70,6 @@ export class DashboardPage {
 
   ngForRendred() {
 	this.counter++;
-	console.log(this.counter, this.stats.length)
 	if (this.counter == this.stats.length) {
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('unslick');
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).css("display", "block");

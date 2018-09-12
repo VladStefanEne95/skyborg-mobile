@@ -4,5 +4,5 @@
 			<ion-option  *ngFor="let date of dates">{{date.title}}</ion-option>
 		</ion-select>
 	</ion-item>
-	<!--<ion-calendar [(ngModel)]="dateRange2" [options]="optionsRange" [type]="type" [format]="'YYYY-MM-DD'" (onChange)="onChangeCalendar($event)"></ion-calendar>-->
+	<ion-calendar [(ngModel)]="dateRange2" [options]="optionsRange" [type]="type" [format]="'YYYY-MM-DD'" (onChange)="onChangeCalendar($event)"></ion-calendar>
 </div>

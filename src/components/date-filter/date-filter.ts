@@ -20,7 +20,10 @@ export class DateFilterComponent implements OnInit {
 	dateRange2: { from: string; to: string; };
 	type: 'string';
 	optionsRange: CalendarComponentOptions = {
-	  pickMode: 'range'
+	  pickMode: 'range',
+	  from: new Date(2014, 1, 1),
+      to: new Date(),
+	  
 	};
 	
 
@@ -32,7 +35,11 @@ export class DateFilterComponent implements OnInit {
 	
 	
 	onChangeCalendar(event) {
-		console.log(event);
+		this.selectedDateRange = this.dates[11];
+		this.selectedDateRange.start = event.from;
+		this.selectedDateRange.end = event.to;
+		console.log(this.selectedDateRange, this.dates[11])
+		this.onFilter.emit(this.selectedDateRange);
 	}
 
     today: moment.Moment = moment().endOf('day');
@@ -127,20 +134,7 @@ export class DateFilterComponent implements OnInit {
 		this.onFilter.emit(this.selectedDateRange);
 	}
 
-	
-    onStartDateChanged(startDate) {
-        if (startDate.value.isAfter(this.selectedDateRange.end)) {
-            this.selectedDateRange.end = this.selectedDateRange.start;
-        }
-        this.onFilter.emit(this.selectedDateRange);
-    }
 
-    onEndDateChanged(endDate) {
-        if (endDate.value.isBefore(this.selectedDateRange.start)) {
-            this.selectedDateRange.start = this.selectedDateRange.end;
-        }
-        this.onFilter.emit(this.selectedDateRange);
-    }
 	
 	
 }
