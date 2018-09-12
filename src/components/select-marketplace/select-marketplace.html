@@ -2,7 +2,7 @@
 <ion-list>
 	<button menuClose ion-item >
 		<ion-label>Marketplace</ion-label>
-		<ion-select [(ngModel)]="marketplaces" (ionChange)="optionsFn();">
+		<ion-select [(ngModel)]="marketplaces" (ionChange)="optionsFn()">
 			<ion-option  *ngFor="let marketplace of marketPlacesArr" >{{marketplace}}</ion-option>
 		</ion-select>
 	</button>

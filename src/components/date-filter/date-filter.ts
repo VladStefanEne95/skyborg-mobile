@@ -9,7 +9,7 @@ import { CalendarComponentOptions } from 'ion2-calendar';
   selector: 'date-filter',
   templateUrl: 'date-filter.html'
 })
-export class DateFilterComponent {
+export class DateFilterComponent implements OnInit {
 
     @Input() selectedDateRange: DateRange;
     @Input() showIntervalPicker = true;
@@ -22,6 +22,14 @@ export class DateFilterComponent {
 	optionsRange: CalendarComponentOptions = {
 	  pickMode: 'range'
 	};
+	
+
+	dateRangePicker;
+
+	ngOnInit() {
+		this.dateRangePicker = "Today";
+	}
+	
 	
 	onChangeCalendar(event) {
 		console.log(event);
@@ -103,17 +111,36 @@ export class DateFilterComponent {
         },
     ];
 
-    ngOnInit() {
-        // this.onFilter.emit(this.dates[0]);
-    }
 
     onClick() {
         this.onFilter.emit(this.selectedDateRange);
     }
 
-    itemClicked(date: DateRange) {
-        // this.showDatePickers = date.intervalType === DateRangeType.CustomRange;
-        this.selectedDateRange = date;
+
+
+	public optionsFn(): void {
+		for (let i = 0; i < this.dates.length; i++) {
+			if (this.dateRangePicker == this.dates[i].title) {
+				this.selectedDateRange = this.dates[i]
+			}
+		}
+		this.onFilter.emit(this.selectedDateRange);
+	}
+
+	
+    onStartDateChanged(startDate) {
+        if (startDate.value.isAfter(this.selectedDateRange.end)) {
+            this.selectedDateRange.end = this.selectedDateRange.start;
+        }
+        this.onFilter.emit(this.selectedDateRange);
     }
 
+    onEndDateChanged(endDate) {
+        if (endDate.value.isBefore(this.selectedDateRange.start)) {
+            this.selectedDateRange.start = this.selectedDateRange.end;
+        }
+        this.onFilter.emit(this.selectedDateRange);
+    }
+	
+	
 }

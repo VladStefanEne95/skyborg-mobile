@@ -10,9 +10,8 @@
 		
 		<ion-content>
 		<div  *ngFor="let countElem of counterArr" class="myCarousel{{countElem}}">
-			<ng-container #statsList *ngFor="let stat of stats;let i = index">
-				<ion-card class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
-					
+			<ng-container #statsList *ngFor="let stat of stats;let i = index; let last = last;">
+				<ion-card style="display:none" class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
 					<ion-card-header class="header">
 						<h1>{{stat.title.dateName}}</h1>
 						<div class="date">{{stat.title?.dateRange}}</div>
@@ -98,5 +97,5 @@
 		</div>
 		<chart [data]="chartData" *ngIf="chartState" (chartPointData)="onChartPointDataChange($event)"></chart>
 		<breakdown [data]="chartPointData" [hidden]="chartState" [dateRange]="dateRange" (showChart)="onShowChartChange($event)" ></breakdown>
-		<date-filter></date-filter>
+		<date-filter (onFilter)="onFilterChanged($event)" [selectedDateRange]="dateToday"></date-filter>
 		</ion-content>

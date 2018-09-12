@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserProvider } from '../../providers/user/user';
 import { Storage } from '@ionic/storage';
 import { AmazonInfo } from '../../classes/amazon-info/amazon-info';
-import { DashboardPage } from '../../pages/dashboard/dashboard'
+
 
 
 @Component({
@@ -14,7 +14,6 @@ export class SelectMarketplaceComponent implements OnInit {
  marketPlacesArr: Array<string>;
  marketplaces;
  marketplaceId;
- @ViewChild('content') navigate;
 
   constructor(public userProvider: UserProvider, public storage: Storage) {
 	console.log('Hello SelectMarketplaceComponent Component');
@@ -44,7 +43,7 @@ export class SelectMarketplaceComponent implements OnInit {
 	  })
   }
 
-  public optionsFn(): void {  
+  public optionsFn(): void {
 	AmazonInfo.marketplaces.map(amazon => {
 		if (amazon.region == this.marketplaces) {
 			this.marketplaceId = amazon.id;

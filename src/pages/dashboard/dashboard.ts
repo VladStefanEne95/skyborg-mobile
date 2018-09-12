@@ -41,6 +41,7 @@ export class DashboardPage {
 	counter = 0;
 	chartState = 1;
 	counterArr = [0, 1];
+	counterReset = 0;
 
 	
 	@ViewChildren('statsList') things: QueryList<any>;
@@ -63,16 +64,17 @@ export class DashboardPage {
   ngAfterViewInit() {
 	this.monthToDateVsLastMonth();
     this.things.changes.subscribe(t => {
-//      this.ngForRendred();
+      this.ngForRendred();
     })
   }
 
   ngForRendred() {
 	this.counter++;
+	console.log(this.counter, this.stats.length)
 	if (this.counter == this.stats.length) {
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('unslick');
-		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).css("display", "block")
-		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).css("display", "none")
+		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).css("display", "block");
+		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).css("display", "none");
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick({
 			dots: true,
 			centerMode: true,
@@ -80,8 +82,13 @@ export class DashboardPage {
 			centerPadding: '30px',
 			slidesToShow: 1
 		  });
-		//   this.stats.push(JSON.parse(JSON.stringify(this.stats[0])));
-		//   this.counterArr.push(this.counterArr[this.counterArr.length - 1] + 1);
+
+		  this.counterArr.push(this.counterArr[this.counterArr.length - 1] + 1);
+		 
+		  if (this.counterReset != -1)
+			this.counterReset = -1;
+		 //  this.stats.push(JSON.parse(JSON.stringify(this.stats[0])));
+		 //  this.counterArr.push(this.counterArr[this.counterArr.length - 1] + 1);
 	}
   }
 
@@ -102,16 +109,17 @@ export class DashboardPage {
 		}
 	}
 
-	// ionViewDidLoad() {
-	//     $('.myCarousel0').slick({
-	//       dots: true,
-	//       centerMode: true,
-	//       infinite: false,
-	//       centerPadding: '30px',
-	//       slidesToShow: 1
-	//     });
-	//   }
+	ionViewDidLoad() {
+	    $('.myCarousel0').slick({
+	      dots: true,
+	      centerMode: true,
+	      infinite: false,
+	      centerPadding: '30px',
+	      slidesToShow: 1
+	    });
+	  }
 
+	
 	getProducts(sortType = undefined, by = undefined): void {
 		const defaultBy = [
 			{ name: 'beginDate', value: this.dateRange.start ? this.dateRange.start : this.dateToday.start }, 
@@ -155,6 +163,7 @@ export class DashboardPage {
 	}
 
 	onFilterChanged(dateRange: DateRange) {
+		this.counter = this.counterReset;
 		this.dateRange = dateRange.start || dateRange.end ? dateRange : this.dateToday;
 		this.stats = this.DashboardFilterProvider.processDateRange(dateRange)
 			.map((requestDate: StatsRequestDate) => {

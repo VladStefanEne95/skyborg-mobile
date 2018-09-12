@@ -1,4 +1,8 @@
-<!-- Generated template for the DateFilterComponent component -->
 <div>
-	<ion-calendar [(ngModel)]="dateRange2" [options]="optionsRange" [type]="type" [format]="'YYYY-MM-DD'" (onChange)="onChangeCalendar($event)"></ion-calendar>
+	<ion-item>
+		<ion-select [(ngModel)]="dateRangePicker" (ionChange)="optionsFn()">
+			<ion-option  *ngFor="let date of dates">{{date.title}}</ion-option>
+		</ion-select>
+	</ion-item>
+	<!--<ion-calendar [(ngModel)]="dateRange2" [options]="optionsRange" [type]="type" [format]="'YYYY-MM-DD'" (onChange)="onChangeCalendar($event)"></ion-calendar>-->
 </div>
