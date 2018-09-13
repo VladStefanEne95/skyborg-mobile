@@ -29,16 +29,31 @@ export class SelectOrganizationComponent implements OnInit {
 				for (let i = 0; i < this.organizationsLength; i++) {
 					this.organizationsNameArr.push(this.organizationJson[i].name)
 				}
-				this.organizations = this.organizationJson[0].name;
+				this.storage.get("organization").then(organizationObj => {
+					this.organizations = JSON.parse(organizationObj).name;
+				})
 			}
 		})
 	}
   
 	public optionsFn(): void {
-		
 			for (let i = 0; i < this.organizationsLength; i++) {
 				if (this.organizationsNameArr[i] == this.organizations) {
-					this.storage.set("organization", JSON.stringify(this.organizationJson[i])).then(() => location.reload());
+					this.storage.set("organization", JSON.stringify(this.organizationJson[i])).then(() => {
+						let marketplaces = this.organizationJson[i].marketPlaces;
+						let marketplacesLength = marketplaces.length;
+						if (marketplacesLength == 1)
+							this.storage.set('marketplace', marketplaces[0]).then(() => location.reload());
+						else {
+							for (let j = 0; j < marketplacesLength; j++) {
+								if (marketplaces[j] == 'ATVPDKIKX0DER') {
+									this.storage.set('marketplace', marketplaces[j]).then(() => location.reload());
+									return;
+								}
+							}
+								this.storage.set('marketplace', marketplaces[0]).then(() => location.reload())
+						}
+					});
 				}
 			}
 	}
