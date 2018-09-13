@@ -1,0 +1,9 @@
+<ion-list>
+		<button menuClose ion-item >
+			<ion-label>Organization</ion-label>
+			<ion-select [(ngModel)]="organizations" (ionChange)="optionsFn()">
+				<ion-option  *ngFor="let organization of organizationsNameArr" >{{organization}}</ion-option>
+			</ion-select>
+		</button>
+	</ion-list>
+	

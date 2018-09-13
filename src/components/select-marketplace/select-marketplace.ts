@@ -25,8 +25,8 @@ export class SelectMarketplaceComponent implements OnInit {
 			if (market) {
 				this.storage.get("organization").then(val => {
 					if (val) {
-						let valJson = JSON.parse(val);
-						let marketPlacesArrId = valJson["marketPlaces"];
+						let organizationJson = JSON.parse(val);
+						let marketPlacesArrId = organizationJson["marketPlaces"];
 						marketPlacesArrId.map(value => {
 							AmazonInfo.marketplaces.map(amazon => {
 								if (amazon.id == value)

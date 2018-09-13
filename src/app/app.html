@@ -6,7 +6,8 @@
   </ion-header>
 
   <ion-content>
-			<select-marketplace></select-marketplace>
+		<select-marketplace></select-marketplace>
+		<select-organization></select-organization>
     <ion-list>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}

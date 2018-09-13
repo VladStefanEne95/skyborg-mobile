@@ -17,6 +17,7 @@ import { BreakdownComponent } from '../components/breakdown/breakdown';
 import { StatsCardComponent } from '../components/stats-card/stats-card';
 import { DateFilterComponent } from '../components/date-filter/date-filter';
 import { SelectMarketplaceComponent } from '../components/select-marketplace/select-marketplace';
+import { SelectOrganizationComponent } from '../components/select-organization/select-organization';
 
 
 import { SlickModule } from 'ngx-slick';
@@ -43,6 +44,7 @@ import { CalendarModule } from "ion2-calendar";
 	DashboardNewPage,
 	StatsCardComponent,
 	SelectMarketplaceComponent,
+	SelectOrganizationComponent,
 	DashboardPage,
     ListPage
   ],
