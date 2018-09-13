@@ -22,8 +22,7 @@ export class DateFilterComponent implements OnInit {
 	optionsRange: CalendarComponentOptions = {
 	  pickMode: 'range',
 	  from: new Date(2014, 1, 1),
-      to: new Date(),
-	  
+      to: new Date(),  
 	};
 	
 
@@ -38,7 +37,6 @@ export class DateFilterComponent implements OnInit {
 		this.selectedDateRange = this.dates[11];
 		this.selectedDateRange.start = event.from;
 		this.selectedDateRange.end = event.to;
-		console.log(this.selectedDateRange, this.dates[11])
 		this.onFilter.emit(this.selectedDateRange);
 	}
 

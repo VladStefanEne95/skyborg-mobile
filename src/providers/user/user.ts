@@ -214,7 +214,18 @@ export class UserProvider {
         this.selectedOrganizationId = organization._id;
         this.organization = organization;
 		this.marketplaces = organization.marketPlaces;
-		this.storage.set('marketplace', this.marketplaces[2]);
+		let marketplacesLength = this.marketplaces.length;
+		if (marketplacesLength == 1)
+			this.storage.set('marketplace', this.marketplaces[0]);
+		else {
+			for (let i = 0; i < marketplacesLength; i++) {
+				if (this.marketplaces[i] == 'ATVPDKIKX0DER') {
+					this.storage.set('marketplace', this.marketplaces[i]);
+					return;
+				}
+				this.storage.set('marketplace', this.marketplaces[0])
+			}
+		}
         console.log('+++MARKETPLACE', this.marketplace);
     }
 
