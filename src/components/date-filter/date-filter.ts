@@ -2,7 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DateRange, DateRangeType} from './date-range.interface';
 import * as moment from 'moment';
 
-import { CalendarComponentOptions } from 'ion2-calendar';
+import { ModalController } from 'ionic-angular';
+import { CalendarModal, CalendarModalOptions, CalendarComponentOptions, CalendarResult } from 'ion2-calendar';
 
 
 @Component({
@@ -17,14 +18,35 @@ export class DateFilterComponent implements OnInit {
     @Output() onFilter: EventEmitter<DateRange> = new EventEmitter<DateRange>();
 	showDatePickers = false;
 
-	dateRange2: { from: string; to: string; };
-	type: 'string';
-	optionsRange: CalendarComponentOptions = {
-	  pickMode: 'range',
-	  from: new Date(2014, 1, 1),
-      to: new Date(),  
-	};
-	
+
+
+	constructor(
+		public modalCtrl: ModalController,
+	  ) { }
+	 
+	openCalendar() {
+        const options: CalendarModalOptions = {
+		  pickMode: 'range',
+		  title: 'Filter',
+		  canBackwardsSelected: true,
+		  to: new Date(),
+        };
+    
+        let myCalendar = this.modalCtrl.create(CalendarModal, {
+          options: options
+        });
+    
+        myCalendar.present();
+    
+		myCalendar.onDidDismiss((date, type) => {
+			if (type === 'done') {	
+				this.selectedDateRange = this.dates[11];
+				this.selectedDateRange.start = moment(date.from.dateObj);
+				this.selectedDateRange.end = moment(date.to.dateObj);
+				this.onFilter.emit(this.selectedDateRange);
+			}
+		  });
+	}
 
 	dateRangePicker;
 
@@ -33,12 +55,6 @@ export class DateFilterComponent implements OnInit {
 	}
 	
 	
-	onChangeCalendar(event) {
-		this.selectedDateRange = this.dates[11];
-		this.selectedDateRange.start = event.from;
-		this.selectedDateRange.end = event.to;
-		this.onFilter.emit(this.selectedDateRange);
-	}
 
     today: moment.Moment = moment().endOf('day');
     dates: DateRange[] = [
