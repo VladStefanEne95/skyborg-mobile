@@ -81,7 +81,7 @@ export class UserProvider {
 				'Content-Type': 'application/json',
 				'Authorization': 'Bearer ' + this.token.access_token,
 				'Skyborg-Organization': this.selectedOrganizationId,
-				'Skyborg-Marketplace': this.marketplace,
+				'Skyborg-Marketplace': this.marketplace, 
 			});
 			const token = 'Bearer ' + this.token.access_token;
 			this.newHeaders = {
@@ -131,7 +131,7 @@ export class UserProvider {
 		})
 		.then(response => {
 			return this.getInfo();
-		})
+		}) 
 		.then(response => {
 			this.refreshOrganizations();
 			this.headers = new HttpHeaders({

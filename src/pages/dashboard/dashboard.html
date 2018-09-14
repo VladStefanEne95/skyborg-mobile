@@ -11,7 +11,7 @@
 	<ion-content>
 		<date-filter (onFilter)="onFilterChanged($event)" [selectedDateRange]="dateToday"></date-filter>
 		<div  *ngFor="let countElem of counterArr" class="myCarousel{{countElem}}">
-			<ng-container #statsList *ngFor="let stat of stats;let i = index; let last = last;">
+			<ng-container #statsList *ngFor="let stat of stats;let i = index;">
 				<ion-card style="display:none" class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
 					<ion-card-header class="header">
 						<h1>{{stat.title.dateName}}</h1>

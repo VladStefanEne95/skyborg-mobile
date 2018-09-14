@@ -1,6 +1,6 @@
 <div>
 		<ion-item><button ion-button (click)="openCalendar()">Filter</button></ion-item>
-	<ion-item>aici
+	<ion-item>
 		<ion-select [(ngModel)]="dateRangePicker" (ionChange)="optionsFn()">
 			<ion-option  *ngFor="let date of dates">{{date.title}}</ion-option>
 		</ion-select>

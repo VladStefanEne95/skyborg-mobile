@@ -1,0 +1,123 @@
+
+
+
+<ion-header>
+		<ion-navbar hideBackButton="true">
+		  <button class="toggleButton" ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		  </button>
+		  <ion-title>Hijacks</ion-title>
+		</ion-navbar>
+	  </ion-header>
+
+
+<ion-content padding>
+		<h1 fxLayout="row" style="margin-left: 34px;">
+				<span style="margin-right: 5px;">Hijacked Listing</span>
+				<div style="margin-left: 11px;margin-top: 7px;">
+						<div fxLayoutAlign="center center" style="
+						display: inline-block;
+							border-radius: 100px;
+							height: 40;
+							padding-top: 3px;
+							font-family: sans-serif;
+							padding-right: 1px;
+							width: 42px;
+							height: 42px;
+							color: white;
+							font-size: 22px;
+							text-align: center;
+							background: red;"
+						[style.background]="StateProvider.hijacks?.count ? 'red': '#272727'">
+								{{ StateProvider.hijacks?.count }}
+						</div>
+				</div>
+			
+			</h1>
+			<button (click)="currentlyHijacked = true;">Show Currently Hijacked</button>
+			<button (click)="currentlyHijacked = false;">Show History</button>
+
+			<!-- Currently Hijacked -->
+			<div *ngIf="currentlyHijacked === true">
+					<button (click)="gridView = true;">Grid View</button>
+					<button (click)="gridView = false;">Table view</button>
+				<!-- Table view -->
+				<div *ngIf="gridView === false">
+					<div style="margin-bottom:20px;" *ngFor="let hijack of hijacks">
+						<table>
+								<tr>
+									<td>Detected </td>
+									<td>{{hijack.createdAt | date:'short'}} </td>
+								</tr>
+								<tr>
+									<td>ASIN </td>
+									<td>{{ hijack.product.ASIN }} </td>
+								</tr>
+								<tr>
+									<td>Product Name </td>
+									<td>{{hijack.product.name}} </td>
+								</tr>
+								<tr>
+									<td>Last updated </td>
+									<td>{{hijack.updatedAt | date:'short'}}  </td>
+								</tr>
+								<tr>
+									<td>Buy Box Ownership </td>
+									<td> 
+										<div *ngIf="hijack.status === 'with_buybox'" >
+											<span>Lost</span>
+										</div>
+										<div *ngIf="hijack.status === 'without_buybox'" >
+											<span>Kept</span>
+										</div> 
+									</td>
+								</tr>
+								<tr>
+									<td>No. of hijackers </td>
+									<td>{{hijack.details.no}} </td>
+								</tr>
+							</table>
+					</div>
+				</div>
+			</div>
+
+			<!-- History -->
+			<div *ngIf="currentlyHijacked === false">
+				<div style="margin-bottom:40px" *ngFor="let hijack of hijacks">
+					<table>
+						<tr>
+							<td>Detected </td>
+							<td>{{hijack.createdAt | date:'short'}} </td>
+						</tr>
+						<tr>
+							<td>ASIN </td>
+							<td>{{ hijack.product.ASIN }} </td>
+						</tr>
+						<tr>
+							<td>Product Name </td>
+							<td>{{hijack.product.name}} </td>
+						</tr>
+						<tr>
+							<td>Last updated </td>
+							<td>{{hijack.updatedAt | date:'short'}}  </td>
+						</tr>
+						<tr>
+							<td>Buy Box Ownership </td>
+							<td> 
+								<div *ngIf="hijack.status === 'with_buybox'" >
+									<span>Lost</span>
+								</div>
+								<div *ngIf="hijack.status === 'without_buybox'" >
+									<span>Kept</span>
+								</div> 
+							</td>
+						</tr>
+						<tr>
+							<td>No. of hijackers </td>
+							<td>{{hijack.details.no}} </td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			
+</ion-content>

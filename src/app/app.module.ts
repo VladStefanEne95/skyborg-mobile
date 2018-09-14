@@ -12,6 +12,7 @@ import { DashboardPage } from '../pages/dashboard/dashboard';
 import { DashboardNewPage } from '../pages/dashboard-new/dashboard-new';
 import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
+import { HijacksPage } from '../pages/hijacks/hijacks';
 import { ChartComponent } from '../components/chart/chart';
 import { BreakdownComponent } from '../components/breakdown/breakdown';
 import { StatsCardComponent } from '../components/stats-card/stats-card';
@@ -30,6 +31,11 @@ import { DashboardFilterProvider } from '../providers/dashboard-filter/dashboard
 import { StatsProvider } from '../providers/stats/stats';
 import { StorageProvider } from '../providers/storage/storage';
 import { CalendarModule } from "ion2-calendar";
+import { HijacksProvider } from '../providers/hijacks/hijacks';
+import { HandleErrorProvider } from '../providers/handle-error/handle-error';
+import { StateProvider } from '../providers/state/state';
+import { ProductProvider } from '../providers/product/product';
+import { ProductSetProvider } from '../providers/product-set/product-set';
 
 
 
@@ -38,6 +44,7 @@ import { CalendarModule } from "ion2-calendar";
     MyApp,
 	HomePage,
 	LoginPage,
+	HijacksPage,
 	ChartComponent,
 	BreakdownComponent,
 	DateFilterComponent,
@@ -62,6 +69,7 @@ import { CalendarModule } from "ion2-calendar";
   entryComponents: [
     MyApp,
 	HomePage,
+	HijacksPage,
 	DashboardPage,
 	DashboardNewPage,
 	LoginPage,
@@ -77,7 +85,12 @@ import { CalendarModule } from "ion2-calendar";
     DashboardFilterProvider,
     StatsProvider,
     StatsProvider,
-    StorageProvider
+    StorageProvider,
+    HijacksProvider,
+    HandleErrorProvider,
+    StateProvider,
+    ProductProvider,
+    ProductSetProvider
   ]
 })
 export class AppModule {}

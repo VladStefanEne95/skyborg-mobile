@@ -1,22 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import {Stat, StatType} from '../../models/dashboard/dashboardTypes';
 
-/**
- * Generated class for the StatsCardComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'stats-card',
   templateUrl: 'stats-card.html'
 })
 export class StatsCardComponent {
 
-  text: string;
+	@Input() stat: Stat;
 
   constructor() {
     console.log('Hello StatsCardComponent Component');
-    this.text = 'Hello World';
   }
+
+  getTitleColor(index) {
+	
+	switch(index) {
+		case 0:
+			return "days1";
+		case 1:
+			return "days7";
+		case 2:
+			return "days14";
+		case 3:
+			return "days30";
+		default:
+			return "days1"
+	}
+}
 
 }
