@@ -13,7 +13,7 @@ export class HandleErrorProvider {
 	handle(error: any): Promise<any> {
 		console.error('An error occurred', error); // for demo purposes only
 		if (401 === error.status) {
-			return Promise.reject(error._body);
+			return Promise.reject(error._bodioniy);
 		}
 		try {
 			return Promise.reject((JSON.parse(error._body)));

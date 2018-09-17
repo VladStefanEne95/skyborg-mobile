@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -77,7 +78,8 @@ import { ProductSetProvider } from '../providers/product-set/product-set';
   ],
   providers: [
     StatusBar,
-    SplashScreen,
+	SplashScreen,
+	InAppBrowser,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UserProvider,
     OrderProvider,
