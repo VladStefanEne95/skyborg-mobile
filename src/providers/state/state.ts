@@ -74,7 +74,7 @@ getHijacks(): Promise<Hijack[]> {
 		
         if (0 !== allPromises.length) {
             Promise.all(allPromises)
-                .then(responses => {console.log( "uita-te aici(state provider)", responses[2]['hijacks'])})
+                .then(responses => {})
                 .catch(err => {
                     this.loading = false;
                     console.log(err);
