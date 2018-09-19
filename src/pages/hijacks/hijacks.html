@@ -86,60 +86,58 @@
 				<div *ngIf="gridView === true">
 					<div class="card-list">
 						<div style="margin-bottom:20px;" *ngFor="let hijack of unreadHijacks">
-							<div class="card-top" fxLayout="row" fxLayoutAlign="start start">
-								<div class="image">
-									<img [src]="hijack.product.thumbUrl" style=" max-width: 90px; border-radius: 2px;border: 1px solid #cccccc;border-radius: 4px;" />
-								</div>
-								<div class="product-description" fxLayout="column" fxLayoutAlign="center start">
-									<div class="product-name">
-										{{ hijack.product.name }}
+							<div class="card-row">
+								<div class="card-product">
+									<div class="card-top" fxLayout="row" fxLayoutAlign="start start">
+										<div class="image">
+											<img [src]="hijack.product.thumbUrl" style=" max-width: 90px; border-radius: 2px;border: 1px solid #cccccc;border-radius: 4px;" />
+										</div>
+										<div class="product-description" fxLayout="column" fxLayoutAlign="center start">
+											<div class="product-name">
+												{{ hijack.product.name }}
+											</div>
+											<div style="cursor:pointer" class="product-asin" (click)="view(hijack)">
+												{{ hijack.product.ASIN }}
+											</div>
+										</div>
 									</div>
-									<div style="cursor:pointer" class="product-asin" (click)="view(hijack)">
-										{{ hijack.product.ASIN }}
+									<div class="last-updated-row">
+										<span>
+											<i class="icon-info"></i>
+											<span class="text-info-left">Last Updated</span>
+										</span>
+										<span class="text-info-right">{{getTimeRange(hijack)}}</span>
 									</div>
-								</div>
-							</div>
-							<div fxLayout="row" fxLayoutAlign="space-between center" style="height: 50px; border-bottom: 1px solid rgba(0, 0, 0, 0.05);">
-								<span>
-									<span class="text-info-left">Last Updated</span>
-								</span>
-								<span class="text-info-right">{{getTimeRange(hijack)}}</span>
-							</div>
-							<div fxLayout="row" fxLayoutAlign="space-between center" style="height: 50px;">
-								<span>
-									<span class="text-info-left">Detected</span>
-								</span>
-								<span class="text-info-right">{{getDateV2(hijack.updatedAt)}}</span>
-							</div>
-							<div fxLayout="row" fxLayoutAlign="space-between center" style="height: 50px;">
-								<span>
-									<i class="material-icons incon-info"></i>
-									<span class="text-info-left">Detected</span>
-								</span>
-								<span class="text-info-right">{{getDateV2(hijack.updatedAt)}}</span>
-							</div>
-							<div *ngIf="hijack.status === 'with_buybox'" class="buy-box-red" fxLayout="row" fxLayoutAlign="space-between center">
-								<div class="color-container" fxLayout="row" fxLayoutAlign="space-between center">
-									<span style="color: white">
-										<i class="material-icons icon-buybox">
-											shopping_cart
-										</i>Buy Box Ownership</span>
-									<span style="color: white; font-weight: bold;margin-left: 115px;">
-										<i class="material-icons icon-buybox-right"></i>
-										<span style="margin-right: 13px">LOST</span>
-									</span>
-								</div>
-							</div>
-							<div *ngIf="hijack.status === 'without_buybox'" class="buy-box-green" fxLayout="row" fxLayoutAlign="space-between center">
-								<div class="color-container" fxLayout="row" fxLayoutAlign="space-between center">
-									<span>
-										<i class="material-icons icon-buybox">
-											shopping_cart
-										</i>Buy Box Ownership</span>
-									<span style="color: white; font-weight: bold;margin-left: 115px;">
-										<i class="material-icons icon-buybox-right"></i>
-										<span style="margin-right: 13px">Kept</span>
-									</span>
+									<div class="detected-row">
+										<span>
+											<i class="icon-info"></i>
+											<span class="text-info-left">Detected</span>
+										</span>
+										<span class="text-info-right">{{getDateV2(hijack.updatedAt)}}</span>
+									</div>
+									<div *ngIf="hijack.status === 'with_buybox'" class="buy-box-red" fxLayout="row" fxLayoutAlign="space-between center">
+										<div class="color-container" fxLayout="row" fxLayoutAlign="space-between center">
+											<span style="color: white">
+												<i class="icon-info">
+													shopping_cart
+												</i>Buy Box Ownership</span>
+											<span style="color: white; font-weight: bold;margin-left: 115px;">
+												<i class="icon-info"></i>
+												<i class="icon-buybox-right"></i>
+												<span style="margin-right: 13px">LOST</span>
+											</span>
+										</div>
+									</div>
+									<div *ngIf="hijack.status === 'without_buybox'" class="buy-box-green" fxLayout="row" fxLayoutAlign="space-between center">
+										<div class="color-container" fxLayout="row" fxLayoutAlign="space-between center">
+											<span style="color:white">
+												<i class="icon-info"></i>Buy Box Ownership</span>
+												<span style="color: white; font-weight: bold;margin-left: 115px;">
+												<i class="icon-buybox-right"></i>
+												<span style="margin-right: 13px">Kept</span>
+											</span>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
