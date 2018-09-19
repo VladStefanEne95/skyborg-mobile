@@ -10,6 +10,7 @@ import { Chart } from 'chart.js';
 
 
 
+
 import * as $ from "jquery";
 import 'slick-carousel/slick/slick'
 

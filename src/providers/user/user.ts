@@ -109,7 +109,23 @@ export class UserProvider {
 
 
   ngOnInit() {
-	
+ }
+
+ saveDevice(device): Promise<any> {
+	let updateDevice = {"device": device}
+	return this.http.put(this.usersURL + "device/" + this.user._id, JSON.stringify(updateDevice), { headers: this.headers })
+		.toPromise()
+		.then(response => {
+			if (200 === response['status']) {
+				this.success = true;
+			} else {
+				this.error = response['errors'];
+			}
+			return this.getInfo();
+		}) 
+		.catch(err => {
+			console.log(err);
+		});
 }
 
   login(email: string, password: string): Promise<boolean> {
