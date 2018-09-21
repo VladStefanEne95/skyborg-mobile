@@ -18,10 +18,21 @@ export class ChartComponent implements OnInit {
 
 	@ViewChild('chart') chartId: ElementRef ;
 
-    private chart: any = [];
-    private chartInitialized: boolean = false;
+	private chart: any = [];
+	private salesMtdData = []; 
+	private profitMtdData = []; 
+	private salesLastMonthData = []; 
+	private profitLastMonthData = [];
+
+	private salesMTD; 
+	private salesLastMonth; 
+	private profitMTD;
+	private profitLastMonth;
+
+	private chartInitialized: boolean = false;
     private canvas: any;
-    private ctx: any;
+	private ctx: any;
+	private monthButton = "Last Month";
     private timeScale: Array<number> = [];
     private chartData: Array<any> = [];
     private chartConfigs = {
@@ -92,8 +103,11 @@ export class ChartComponent implements OnInit {
                         callback: (label, index, labels) => {
                             return label;
                         }
-                    },
-                }]
+					},
+					stacked: true
+                }], xAxes: [{ 
+					stacked: true 
+				}],
 			},
 			
             tooltips: {
@@ -152,57 +166,101 @@ export class ChartComponent implements OnInit {
         this.timeScale = [];
         this.chartData = [];
         const daysLastMonth = [];
-        const salesMtdData = [], 
-              profitMtdData = [], 
-              salesLastMonthData = [], 
-              profitLastMonthData = [];
+
 
         data['lastMonth'].forEach(item => {
-            daysLastMonth.push(item._id['day']);
-            salesLastMonthData.push(item.grossSales.toFixed(2));
-            profitLastMonthData.push(item.netAmount.toFixed(2));
+			daysLastMonth.push(item._id['day']);
         });
 
         this.timeScale = daysLastMonth;
 
         data['monthToDate'].forEach(item => {
-            salesMtdData.push(item.grossSales.toFixed(2));
-            profitMtdData.push(item.netAmount.toFixed(2));
+			let costs = item.grossSales - item.netAmount;
+            this.salesMtdData.push(costs.toFixed(2));
+            this.profitMtdData.push(item.netAmount.toFixed(2));
         });
 
-        const salesMTD = {
-            data: salesMtdData,
+        this.salesMTD = {
+            data: this.salesMtdData,
             dataSources: data.monthToDate,
-            label: 'Sales MTD',
-            backgroundColor: "#3e95cd",
+            label: 'Revenue MTD',
+            backgroundColor: "#F29813",
             fill: false,
         };
-        const salesLastMonth = {
-            data: salesLastMonthData,
-            dataSources: data.lastMonth,
-            label: 'Sales Last Month',
-            backgroundColor: "#8e5ea2",
-            fill: false,
-        };
-        const profitMTD = {
-            data: profitMtdData,
+        this.profitMTD = {
+            data: this.profitMtdData,
             dataSources: data.monthToDate,
             label: 'Profit MTD',
             backgroundColor: "#3cba9f",
             fill: false,
         };
-        const profitLastMonth = {
-            data: profitLastMonthData,
-            dataSources: data.lastMonth,
-            label: 'Profit Last Month',
-            backgroundColor: "#e8c3b9",
-            fill: true,
-        };
 		
-        this.chartData = [salesMTD, salesLastMonth, profitMTD, profitLastMonth];
+        this.chartData = [this.salesMTD,  this.profitMTD];
         this.chartConfigs.options.title.text = 'Month To Date vs Last Month';
         this.chartConfigs.data.labels = this.timeScale;
         this.chartConfigs.data.datasets = this.chartData;
-    }
+	}
+	toggleChartMonth() {
+
+		this.chartData = [];
+		this.salesLastMonthData = [];
+		this.salesMtdData = [];
+		this.profitLastMonthData = [];
+		this.profitMtdData = [];
+
+		if (this.monthButton == "Last Month") {
+			this.data['lastMonth'].forEach(item => {
+				let costs = item.grossSales - item.netAmount;
+				this.salesLastMonthData.push(costs.toFixed(2));
+				this.profitLastMonthData.push(item.netAmount.toFixed(2));
+			});
+
+			this.salesLastMonth = {
+				data: this.salesLastMonthData,
+				dataSources: this.data.lastMonth,
+				label: 'Sales Last Month',
+				backgroundColor: "#F29813",
+				fill: false,
+			};
+
+			this.profitLastMonth = {
+				data: this.profitLastMonthData,
+				dataSources: this.data.lastMonth,
+				label: 'Profit Last Month',
+				backgroundColor: "#3cba9f",
+				fill: true,
+			};
+			this.chartData = [this.salesLastMonth,  this.profitLastMonth];
+
+			this.monthButton = "Curent month";
+		} else if (this.monthButton == "Curent month") {
+			this.data['monthToDate'].forEach(item => {
+				let costs = item.grossSales - item.netAmount;
+				this.salesMtdData.push(costs.toFixed(2));
+				this.profitMtdData.push(item.netAmount.toFixed(2));
+			});
+			this.salesMTD = {
+				data: this.salesMtdData,
+				dataSources: this.data.monthToDate,
+				label: 'Revenue MTD',
+				backgroundColor: "#F29813",
+				fill: false,
+			};
+
+			this.profitMTD = {
+				data: this.profitMtdData,
+				dataSources: this.data.monthToDate,
+				label: 'Profit MTD',
+				backgroundColor: "#3cba9f",
+				fill: false,
+			};
+			this.chartData = [this.salesMTD, this.profitMTD];
+			this.monthButton = "Last Month";
+		}
+
+		this.chartConfigs.data.datasets = this.chartData;
+
+		this.chart.update();
+	}
 
 }
