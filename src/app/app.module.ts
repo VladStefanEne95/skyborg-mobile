@@ -11,7 +11,7 @@ import { OneSignal } from '@ionic-native/onesignal';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { DashboardPage } from '../pages/dashboard/dashboard';
-import { DashboardNewPage } from '../pages/dashboard-new/dashboard-new';
+import { DashboardV3Page } from '../pages/dashboard-v3/dashboard-v3';
 import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
 import { HijacksPage } from '../pages/hijacks/hijacks';
@@ -50,7 +50,7 @@ import { ProductSetProvider } from '../providers/product-set/product-set';
 	ChartComponent,
 	BreakdownComponent,
 	DateFilterComponent,
-	DashboardNewPage,
+	DashboardV3Page,
 	StatsCardComponent,
 	SelectMarketplaceComponent,
 	SelectOrganizationComponent,
@@ -73,7 +73,7 @@ import { ProductSetProvider } from '../providers/product-set/product-set';
 	HomePage,
 	HijacksPage,
 	DashboardPage,
-	DashboardNewPage,
+	DashboardV3Page,
 	LoginPage,
     ListPage
   ],

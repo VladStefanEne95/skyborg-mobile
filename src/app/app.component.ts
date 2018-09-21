@@ -9,7 +9,7 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { HijacksPage } from '../pages/hijacks/hijacks';
 import { DashboardPage } from '../pages/dashboard/dashboard';
-import { DashboardNewPage } from '../pages/dashboard-new/dashboard-new';
+import { DashboardV3Page } from '../pages/dashboard-v3/dashboard-v3';
 
 
 import { Storage } from '@ionic/storage';
@@ -42,6 +42,7 @@ export class MyApp {
 	  { title: 'Dashboard', component: DashboardPage },
 	  { title: 'Login', component: LoginPage },
 	  { title: 'List', component: ListPage },
+	  { title: 'DashboardNew', component: DashboardV3Page },
 	  { title: 'Hijacks', component: HijacksPage }
 	];
 

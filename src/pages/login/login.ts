@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
 import { DashboardPage } from '../dashboard/dashboard';
-import { DashboardNewPage } from '../dashboard-new/dashboard-new';
+import { DashboardV3Page } from '../dashboard-v3/dashboard-v3';
 import { Storage } from '@ionic/storage';
 
 
@@ -20,7 +20,7 @@ export class LoginPage {
 	constructor(public navCtrl: NavController, public navParams: NavParams, public UserProvider: UserProvider, public storage: Storage) {
 		this.storage.get('loggedIn').then(val => {
 			if(val)
-				this.navCtrl.push(DashboardPage);
+				this.navCtrl.push(DashboardV3Page);
 		})
   }
 

@@ -1,0 +1,220 @@
+page-dashboard-v3 {
+	@mixin color_day1() {
+		border-color:#318cf3;
+	}
+	
+	@mixin color_day7() {
+		border-color:#fe8420;
+	}
+	
+	@mixin color_day14() {
+		border-color:#94250f;
+	}
+	
+	@mixin color_day30() {
+		border-color:#249d3a;
+	}
+	
+	.stats-card-component {
+		position: relative;
+		padding: 0;
+		border-radius: 2px;
+	
+		.header {
+			position: relative;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 15px 10px 15px 20px;
+			border-top-left-radius: 2px;
+			border-top-right-radius: 2px;
+			background-color: #fafafa;
+			border-top: 3px solid#318cf3;
+			h1 {
+				margin: 0;
+				font-size: 21px;
+				color: #000;
+			}
+			.date{
+				font-size: 12px;
+				display: flex;
+				align-items: center;
+				color: #808080;
+				.calendar-icon{
+					margin-right: 3px;
+					color: #0962ff;
+					width: 13px;
+					height: 13px;
+					font-size: 13px;
+				}
+			}
+			.date-range{
+				position: absolute;
+				background: #fff;
+				z-index: 10;
+				padding-top: 21px;
+				padding-left: 21px;
+				padding-right: 22px;
+				padding-bottom: 25px;
+				top: 70px;
+				left: 0px;
+				right: 0;
+				display: flex;
+				box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+				flex-direction: column;
+			}
+			.more{
+				cursor: pointer;
+				user-select: none;
+				color: #808080;
+				width: 27px;
+				font-size: 27px;
+				height: 27px;
+			}
+		}
+	
+		.sub-header {
+			display: flex;
+			justify-content: space-between;
+			padding: 15px 10px 10px 20px;
+			box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+			
+			.item {
+				p{
+					margin: 0;
+				}
+				.name{
+					font-size: 12px;
+					font-weight: bold;
+					color: #7a7a7a;
+					text-transform: uppercase;
+				}
+				.value{
+					font-size: 16px;
+					color: #000;
+					span{
+						font-size: 11px;
+					}
+				}
+				&.revenue{
+					.name{
+						color: #1c6eff;
+					}
+				}
+				&.profit{
+					.name{
+						color: #0ab600;
+					}
+				}
+			}
+		}
+	
+		.menu {
+			min-width: 305px;
+			position: absolute;
+			z-index: 10;
+			top: 54px;
+			right: 15px;
+			background: #fff;
+			box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+			border-radius: 2px;
+			.icon {
+				font-size: 22px;
+				width: 22px;
+				height: 22px;
+				margin-right: 19px;
+			}
+			.list{
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				li {
+					display: flex;
+					align-items: flex-end;
+					padding-bottom: 28px;
+					cursor: pointer;
+					user-select: none;
+					&.delete{
+						color: #de0000;
+						padding-bottom: 0;
+					}
+				}
+			}
+			.menu-header, .menu-footer, .menu-body{
+				padding: 20px;
+			}
+			.menu-header{
+				border-bottom: 2px solid #e7e7e7;
+				.list {
+					li:last-child{
+						padding-bottom: 0;
+					}
+				}
+			}
+			.menu-body {
+				.list {
+					.icon{
+						color: #1065ff;
+					}
+					li:last-child{
+						padding-bottom: 0;
+					}
+				}
+			}
+			.menu-footer{
+				border-top: 2px solid #e7e7e7;
+			}
+		}
+	
+		&.days1 {
+			.header{
+				@include color_day1();
+			}
+		}
+	
+		&.days7 {
+			.header{
+				@include color_day7();
+			}
+		}
+	
+		&.days14 {
+			.header{
+				@include color_day14();
+			}
+		}
+	
+		&.days30 {
+			.header{
+				@include color_day30();
+			}
+		}
+	
+	}
+
+	.slick-slide {
+		opacity: 0.6;
+	}
+	.slick-current {
+		opacity: 1 !important;
+	}
+	.slick-dots li button:before  {
+		font-size: 50px !important;
+	}
+
+	.slick-dots li {
+		display: none;
+	}
+
+	.slick-list {
+		margin-left: -20px;
+	}
+	.slick-slide {
+		padding: 0 5px;
+	  }
+
+	.toggleButton {
+		display: block !important;
+	}
+
+}

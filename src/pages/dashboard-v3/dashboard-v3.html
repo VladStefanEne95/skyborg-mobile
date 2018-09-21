@@ -1,0 +1,49 @@
+<ion-header>
+	<ion-navbar hideBackButton="true">
+	  <button class="toggleButton" ion-button menuToggle>
+		<ion-icon name="menu"></ion-icon>
+	  </button>
+	  <ion-title></ion-title>
+	</ion-navbar>
+  </ion-header>
+		
+		
+	<ion-content>
+		<div  *ngFor="let countElem of counterArr" class="myCarousel{{countElem}}">
+			<ng-container #statsList *ngFor="let stat of stats;let i = index;">
+				<ion-card style="display:none" class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
+					<ion-card-header class="header">
+						<div>
+							<h1>{{stat.title.dateName}}</h1>
+							<div class="date" role="button" (click)="toggleDateRange()">
+								{{stat.title?.dateRange}}
+							</div>
+						</div>
+						<ion-icon class="more" (click)="toggleMenu()" name="more"></ion-icon>
+					</ion-card-header>
+					
+					<ion-card-content class="sub-header">
+							<div class="item">
+								<p class="name">Orders</p>
+								<p class="value">{{ stat.orders?.total }}</p>
+							</div>
+							<div class="item">
+								<p class="name">Units</p>
+								<p class="value">{{ stat.units?.total }}</p>
+							</div>
+							<div class="item revenue">
+								<p class="name">Revenue</p>
+								<p class="value">{{ stat.summary?.grossSales | currency }}</p>
+							</div>
+							<div class="item profit">
+								<p class="name">Profit</p>
+								<p class="value">{{ stat.summary?.grossSales | currency }}</p>
+							</div>
+					</ion-card-content>
+				</ion-card>                                                               
+			</ng-container>
+		</div>
+		<date-filter (onFilter)="onFilterChanged($event)" [selectedDateRange]="dateToday"></date-filter>
+		<chart [data]="chartData" *ngIf="chartState" (chartPointData)="onChartPointDataChange($event)"></chart>
+		<breakdown [data]="chartPointData" [hidden]="chartState" [dateRange]="dateRange" (showChart)="onShowChartChange($event)" ></breakdown>
+	</ion-content>
