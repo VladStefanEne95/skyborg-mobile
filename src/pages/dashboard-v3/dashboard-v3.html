@@ -3,7 +3,8 @@
 	  <button class="toggleButton" ion-button menuToggle>
 		<ion-icon name="menu"></ion-icon>
 	  </button>
-	  <ion-title></ion-title>
+	  <ion-title>Dashboard</ion-title>
+	  <ion-icon name="add-circle-outline"></ion-icon>
 	</ion-navbar>
   </ion-header>
 		
@@ -21,16 +22,7 @@
 						</div>
 						<ion-icon class="more" (click)="toggleMenu()" name="more"></ion-icon>
 					</ion-card-header>
-					
 					<ion-card-content class="sub-header">
-							<div class="item">
-								<p class="name">Orders</p>
-								<p class="value">{{ stat.orders?.total }}</p>
-							</div>
-							<div class="item">
-								<p class="name">Units</p>
-								<p class="value">{{ stat.units?.total }}</p>
-							</div>
 							<div class="item revenue">
 								<p class="name">Revenue</p>
 								<p class="value">{{ stat.summary?.grossSales | currency }}</p>
@@ -38,6 +30,14 @@
 							<div class="item profit">
 								<p class="name">Profit</p>
 								<p class="value">{{ stat.summary?.grossSales | currency }}</p>
+							</div>
+							<div class="item">
+								<p class="name">Orders</p>
+								<p class="value">{{ stat.orders?.total }}</p>
+							</div>
+							<div class="item">
+								<p class="name">Units</p>
+								<p class="value">{{ stat.units?.total }}</p>
 							</div>
 					</ion-card-content>
 				</ion-card>                                                               

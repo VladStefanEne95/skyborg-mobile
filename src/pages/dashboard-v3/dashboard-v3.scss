@@ -18,7 +18,7 @@ page-dashboard-v3 {
 	.stats-card-component {
 		position: relative;
 		padding: 0;
-		border-radius: 2px;
+		border-radius: 10px;
 	
 		.header {
 			position: relative;
@@ -28,8 +28,8 @@ page-dashboard-v3 {
 			padding: 15px 10px 15px 20px;
 			border-top-left-radius: 2px;
 			border-top-right-radius: 2px;
+			border-bottom: 1px solid #E0E0E0;
 			background-color: #fafafa;
-			border-top: 3px solid#318cf3;
 			h1 {
 				margin: 0;
 				font-size: 21px;
@@ -165,31 +165,6 @@ page-dashboard-v3 {
 				border-top: 2px solid #e7e7e7;
 			}
 		}
-	
-		&.days1 {
-			.header{
-				@include color_day1();
-			}
-		}
-	
-		&.days7 {
-			.header{
-				@include color_day7();
-			}
-		}
-	
-		&.days14 {
-			.header{
-				@include color_day14();
-			}
-		}
-	
-		&.days30 {
-			.header{
-				@include color_day30();
-			}
-		}
-	
 	}
 
 	.slick-slide {
@@ -217,4 +192,28 @@ page-dashboard-v3 {
 		display: block !important;
 	}
 
+	ion-navbar.toolbar {
+		display: block;
+	}
+	.toolbar-background-md {
+		background: linear-gradient(to right, #3023AE 50%, #C86DD7 100%);
+	}
+	.bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default,
+	.toolbar-title-md {
+		color: #ffffff;
+	}
+
+	ion-header {
+		z-index: 1;
+	}
+	.toolbar-md {
+		  min-height: 160px;
+	}
+	.scroll-content {
+		margin-top: 60px !important;
+	}
+	
+	.chartjs-render-monitor {
+		background: white;
+	}
 }

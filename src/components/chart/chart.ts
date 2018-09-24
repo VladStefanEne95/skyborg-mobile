@@ -122,7 +122,7 @@ export class ChartComponent implements OnInit {
                             label += ': ';
 						}
                         label += tooltipItem.yLabel;
-                       // this.chartPointData.emit({event: 'chart-point-hovered', data: dataSource});
+                        this.chartPointData.emit({event: 'chart-point-hovered', data: dataSource});
                         return label;
                     }
                 }
@@ -195,7 +195,7 @@ export class ChartComponent implements OnInit {
             fill: false,
         };
 		
-        this.chartData = [this.salesMTD,  this.profitMTD];
+        this.chartData = [this.profitMTD, this.salesMTD];
         this.chartConfigs.options.title.text = 'Month To Date vs Last Month';
         this.chartConfigs.data.labels = this.timeScale;
         this.chartConfigs.data.datasets = this.chartData;
@@ -230,7 +230,7 @@ export class ChartComponent implements OnInit {
 				backgroundColor: "#3cba9f",
 				fill: true,
 			};
-			this.chartData = [this.salesLastMonth,  this.profitLastMonth];
+			this.chartData = [this.profitLastMonth, this.salesLastMonth];
 
 			this.monthButton = "Curent month";
 		} else if (this.monthButton == "Curent month") {
@@ -254,7 +254,7 @@ export class ChartComponent implements OnInit {
 				backgroundColor: "#3cba9f",
 				fill: false,
 			};
-			this.chartData = [this.salesMTD, this.profitMTD];
+			this.chartData = [this.profitMTD, this.salesMTD];
 			this.monthButton = "Last Month";
 		}
 
