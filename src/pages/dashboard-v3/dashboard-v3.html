@@ -10,9 +10,16 @@
 		
 		
 	<ion-content>
-		<div  *ngFor="let countElem of counterArr" class="myCarousel{{countElem}}">
+		<ion-item style="display:none">
+			<ion-select  #selectOptions [(ngModel)]="cardOptions" (ionChange)="optionsFn()" multiple="true">
+					<ion-option *ngFor="let metric of metrics">{{metric.label}}</ion-option>
+			</ion-select>	
+		</ion-item>
+		<div *ngFor="let countElem of counterArr" class="myCarousel{{countElem}}">
 			<ng-container #statsList *ngFor="let stat of stats;let i = index;">
-				<ion-card style="display:none" class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
+				<ion-card (click)="sendDataToChart();" style="display:none" class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
+
+					
 					<ion-card-header class="header">
 						<div>
 							<h1>{{stat.title.dateName}}</h1>
@@ -20,25 +27,54 @@
 								{{stat.title?.dateRange}}
 							</div>
 						</div>
-						<ion-icon class="more" (click)="toggleMenu()" name="more"></ion-icon>
+						<ion-icon class="more" (click)="toggleMenu();$event.stopPropagation()" name="more">
+						</ion-icon>
 					</ion-card-header>
 					<ion-card-content class="sub-header">
-							<div class="item revenue">
+							<div class="item revenue" *ngIf="metrics[0].isSelected">
 								<p class="name">Revenue</p>
 								<p class="value">{{ stat.summary?.grossSales | currency }}</p>
 							</div>
-							<div class="item profit">
+							<div class="item profit" *ngIf="metrics[1].isSelected">
 								<p class="name">Profit</p>
-								<p class="value">{{ stat.summary?.grossSales | currency }}</p>
+								<p class="value">{{ stat.summary?.estProfit | currency }}</p>
 							</div>
-							<div class="item">
+							<div class="item" *ngIf="metrics[2].isSelected">
 								<p class="name">Orders</p>
 								<p class="value">{{ stat.orders?.total }}</p>
 							</div>
-							<div class="item">
+							<div class="item" *ngIf="metrics[3].isSelected">
 								<p class="name">Units</p>
 								<p class="value">{{ stat.units?.total }}</p>
 							</div>
+							
+							
+							<div class="item" *ngIf="metrics[4].isSelected">
+									<p class="name">Net ROI</p>
+									<p class="value">{{ stat.summary?.roi }}</p>
+							</div>
+							<div class="item" *ngIf="metrics[5].isSelected">
+									<p class="name">Net Margin</p>
+									<p class="value">{{ stat.summary?.margin }}</p>
+							</div>
+							<div class="item" *ngIf="metrics[6].isSelected">
+									<p class="name">PPC Revenue</p>
+									<p class="value">{{ stat.orders?.ppc }}</p>
+							</div>
+							<div class="item" *ngIf="metrics[7].isSelected">
+									<p class="name">Organic Revenue</p>
+									<p class="value">{{ stat.orders?.organic }}</p>
+							</div>
+							<div class="item" *ngIf="metrics[8].isSelected">
+									<p class="name">Refunded Units</p>
+									<p class="value">{{ stat.units?.refunds}}</p>
+							</div>
+							<div class="item" *ngIf="metrics[9].isSelected">
+									<p class="name">Promo Units</p>
+									<p class="value">{{ stat.units?.promos }}</p>
+							</div>
+
+								
 					</ion-card-content>
 				</ion-card>                                                               
 			</ng-container>

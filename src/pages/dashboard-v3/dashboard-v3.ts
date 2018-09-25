@@ -1,4 +1,4 @@
-import { Component, Input, ViewChildren, ElementRef, ViewChild, QueryList, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, ViewChildren, ElementRef, ViewChild, QueryList, ChangeDetectorRef, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ProductDetails, StatType, Stat, StatsResponse, StatsRequestDate } from '../../models/dashboard/dashboardTypes';
 import { DateRange, DateRangeType } from '../../components/date-filter/date-range.interface';
@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { LoginPage } from '../login/login';
 import { Storage } from '@ionic/storage';
 import { Chart } from 'chart.js';
-
+import { Select } from 'ionic-angular';
 
 
 
@@ -23,7 +23,7 @@ import { DashboardFilterProvider } from '../../providers/dashboard-filter/dashbo
   selector: 'page-dashboard-v3',
   templateUrl: 'dashboard-v3.html',
 })
-export class DashboardV3Page {
+export class DashboardV3Page implements OnInit {
 
 	category = 'Dashboard';
     dateToday: DateRange = {
@@ -42,8 +42,23 @@ export class DashboardV3Page {
 	chartState = 1;
 	counterArr = [0, 1];
 	counterReset = 0;
+	cardOptions: Array<String> = [];
 
-	
+	public metrics = [
+        { label: 'Orders', isSelected: true },
+        { label: 'Units', isSelected: true },
+        { label: 'Revenue', isSelected: true },
+        { label: 'Profit', isSelected: true },
+        { label: 'Net ROI', isSelected: false },
+        { label: 'Net Margin', isSelected: false },
+        { label: 'PPC Revenue', isSelected: false },
+        { label: 'Organic Revenue', isSelected: false },
+        { label: 'Refunded Units', isSelected: false },
+        { label: 'Promo Units', isSelected: false }
+    ];
+
+
+	@ViewChild('selectOptions') select1: Select;
 	@ViewChildren('statsList') things: QueryList<any>;
 
   constructor (
@@ -58,7 +73,16 @@ export class DashboardV3Page {
 	
 		const date = <DateRange>{ intervalType: DateRangeType.Today, title: 'Today', start: undefined, end: undefined };
 		this.onFilterChanged(date);
-}
+
+	}
+
+	ngOnInit() {
+		this.metrics.forEach(element => {
+			if (element.isSelected == true) {
+				this.cardOptions.push(element.label)
+			}
+		});	
+	}
 
 
   ngAfterViewInit() {
@@ -210,19 +234,7 @@ export class DashboardV3Page {
         start : '',
         end : ''
     };
-    public metrics: Object = [
-        { label: 'Orders', isSelected: true },
-        { label: 'Units', isSelected: true },
-        { label: 'Revenue', isSelected: true },
-        { label: 'Profit', isSelected: true },
-        { label: 'Net ROI', isSelected: false },
-        { label: 'Net Margin', isSelected: false },
-        { label: 'PPC Revenue', isSelected: false },
-        { label: 'Organic Revenue', isSelected: false },
-        { label: 'Refunded Units', isSelected: false },
-        { label: 'Promo Units', isSelected: false }
-    ];
-
+    
 	
     toggleMetrics(metric) {
         metric.isSelected = !metric.isSelected;
@@ -233,6 +245,19 @@ export class DashboardV3Page {
     }
 
     toggleMenu() {
-        this.menuIsOpen = !this.menuIsOpen;
-    }
+		this.select1.open();
+	}
+	
+	optionsFn() {
+		this.metrics.forEach(metric => {
+			if ( this.cardOptions.indexOf(metric.label) != -1) {
+				metric.isSelected = true;
+			} else {
+				metric.isSelected = false;
+			}
+		})
+	}
+	sendDataToChart() {
+		;
+	}
 }
