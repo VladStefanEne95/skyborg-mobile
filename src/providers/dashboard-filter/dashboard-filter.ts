@@ -52,7 +52,6 @@ export class DashboardFilterProvider {
 processCustomRange(range: DateRange): StatsRequestDate[] {
 	const result: StatsRequestDate[] = [];
 	const numberOfDays = range.end.diff(range.start, 'days');
-	console.log('CUSTOM RANGE', numberOfDays);
 	if (numberOfDays === 0) {
 		const isToday = moment().diff(range.end, 'days') === 0;
 		return this.processOneDay(isToday ? undefined : range);

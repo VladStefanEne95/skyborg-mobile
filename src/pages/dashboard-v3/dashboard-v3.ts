@@ -42,6 +42,7 @@ export class DashboardV3Page implements OnInit {
 	chartState = 1;
 	counterArr = [0, 1];
 	counterReset = 0;
+	filterChangedCounter = 0;
 	cardOptions: Array<String> = [];
 
 	public metrics = [
@@ -93,6 +94,7 @@ export class DashboardV3Page implements OnInit {
   }
 
   ngForRendred() {
+	let that = this;
 	this.counter++;
 	if (this.counter == this.stats.length) {
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('unslick');
@@ -105,6 +107,12 @@ export class DashboardV3Page implements OnInit {
 			centerPadding: '30px',
 			slidesToShow: 1
 		  });
+
+		  $('.myCarousel' + this.counterArr[this.counterArr.length - 1]).on("beforeChange", function (event, slick, currentSlide, nextSlide) {
+			  if (nextSlide != currentSlide) {
+				that.sendDataToChart(that.stats[nextSlide]);
+			  }
+		})
 
 		  this.counterArr.push(this.counterArr[this.counterArr.length - 1] + 1);
 		 
@@ -198,6 +206,7 @@ export class DashboardV3Page implements OnInit {
 				dummyStat.summary = { grossSales: 2, estProfit: 3, roi: 4, margin: 5 };
 				return dummyStat;
 			});
+			
 
 		let i = 0;
 		this.ProgressBarProvider.show();
@@ -205,6 +214,12 @@ export class DashboardV3Page implements OnInit {
 			.finally(() => this.ProgressBarProvider.hide())
 			.subscribe(response => {
 				this.stats[i] = Stat.fromJSON(response);
+				
+				if (this.filterChangedCounter == 0)
+					this.filterChangedCounter = 1;
+				else if (i == 0){
+					this.sendDataToChart(this.stats[0]);
+				}
 				i++;
 			});
 
@@ -260,7 +275,7 @@ export class DashboardV3Page implements OnInit {
 	customChartData(startDate, endDate) {
 
 		let startDateMoment = moment(startDate, "MM-DD-YYYY").startOf('day');
-		let endDateMoment = moment(endDate, "MM-DD-YYYY").endOf('day');
+		let endDateMoment = moment(endDate, "MM-DD-YYYY").endOf('day').add(1, 'days');
 
 		let startDateLastYearMoment = moment(startDate, "MM-DD-YYYY").startOf('day').subtract(1, 'years');
 		let endDateLastYearMoment = moment(endDate, "MM-DD-YYYY").endOf('day').subtract(1, 'years');
@@ -294,8 +309,9 @@ export class DashboardV3Page implements OnInit {
 	}
 
 	sendDataToChart(stat) {
+		console.log(stat)
 		if (stat.title.dateRange.length == 10) {
-			;
+			this.monthToDateVsLastMonth();
 		} else {
 			let startDate = stat.title.dateRange.substring(0, 10);
 			let endDate = stat.title.dateRange.substring(13, 23);
