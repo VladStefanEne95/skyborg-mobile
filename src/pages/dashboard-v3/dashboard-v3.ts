@@ -176,7 +176,6 @@ export class DashboardV3Page implements OnInit {
 				{ name: 'reportTime', value: 'daily' }
 			], []);
 		};
-
 		Promise.all([lastMonth(), monthToDate()]).then(result => {
 			this.chartData = {
 				lastMonth: result[0].slice(1),
@@ -257,7 +256,50 @@ export class DashboardV3Page implements OnInit {
 			}
 		})
 	}
-	sendDataToChart() {
-		;
+
+	customChartData(startDate, endDate) {
+
+		let startDateMoment = moment(startDate, "MM-DD-YYYY").startOf('day');
+		let endDateMoment = moment(endDate, "MM-DD-YYYY").endOf('day');
+
+		let startDateLastYearMoment = moment(startDate, "MM-DD-YYYY").startOf('day').subtract(1, 'years');
+		let endDateLastYearMoment = moment(endDate, "MM-DD-YYYY").endOf('day').subtract(1, 'years');
+		
+
+		const lastPeriod = () => {
+			return this.OrderProvider.getOrdersSalesStats([
+				{ name: 'beginDate', value: startDateLastYearMoment}, 
+				{ name: 'endDate', value: endDateLastYearMoment},
+				{ name: 'reportTime', value: 'daily' }
+			], []);
+		};
+		
+
+		let periodToDate = () => { 
+			return this.OrderProvider.getOrdersSalesStats([
+				{ name: 'beginDate', value: startDateMoment }, 
+				{ name: 'endDate', value: endDateMoment },
+				{ name: 'reportTime', value: 'daily' }
+			], []);
+		};
+
+
+		Promise.all([lastPeriod(), periodToDate()]).then(result => {
+			this.chartData = {
+				lastMonth: result[0].slice(1),
+				monthToDate: result[1].slice(1)
+			};
+		})
+		
+	}
+
+	sendDataToChart(stat) {
+		if (stat.title.dateRange.length == 10) {
+			;
+		} else {
+			let startDate = stat.title.dateRange.substring(0, 10);
+			let endDate = stat.title.dateRange.substring(13, 23);
+			this.customChartData(startDate, endDate);
+		}
 	}
 }

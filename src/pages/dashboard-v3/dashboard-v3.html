@@ -17,7 +17,7 @@
 		</ion-item>
 		<div *ngFor="let countElem of counterArr" class="myCarousel{{countElem}}">
 			<ng-container #statsList *ngFor="let stat of stats;let i = index;">
-				<ion-card (click)="sendDataToChart();" style="display:none" class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
+				<ion-card (click)="sendDataToChart(stat);" style="display:none" class="stats-card-component mat-card" [ngClass]="getTitleColor(i)">
 
 					
 					<ion-card-header class="header">

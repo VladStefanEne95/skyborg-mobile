@@ -134,7 +134,7 @@ export class ChartComponent implements OnInit {
 	}
 	
 	ngOnChanges(changes): void {
-        if(this.data) {
+        if (this.data) {
             this.monthToDateVsLastMonth(this.data);
             this.initChart();
         }
@@ -167,6 +167,8 @@ export class ChartComponent implements OnInit {
         this.chartData = [];
         const daysLastMonth = [];
 
+		this.salesMtdData = [];
+		this.profitMtdData = [];
 
         data['lastMonth'].forEach(item => {
 			daysLastMonth.push(item._id['day']);
@@ -178,8 +180,8 @@ export class ChartComponent implements OnInit {
 			let costs = item.grossSales - item.netAmount;
             this.salesMtdData.push(costs.toFixed(2));
             this.profitMtdData.push(item.netAmount.toFixed(2));
-        });
-
+		});
+		
         this.salesMTD = {
             data: this.salesMtdData,
             dataSources: data.monthToDate,
