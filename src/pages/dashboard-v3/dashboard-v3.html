@@ -11,7 +11,7 @@
 		
 	<ion-content>
 		<ion-item style="display:none">
-			<ion-select  #selectOptions [(ngModel)]="cardOptions" (ionChange)="optionsFn()" multiple="true">
+			<ion-select  #selectOptions [(ngModel)]="cardOptions" (ionChange)="optionsFn()" multiple="true" title="test"  [selectOptions]="{title:'Title'}" >
 					<ion-option *ngFor="let metric of metrics">{{metric.label}}</ion-option>
 			</ion-select>	
 		</ion-item>

@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ProductDetails, StatType, Stat, StatsResponse, StatsRequestDate } from '../../models/dashboard/dashboardTypes';
 import { DateRange, DateRangeType } from '../../components/date-filter/date-range.interface';
 import { UserProvider } from '../../providers/user/user';
+import { AppConfigurationsProvider } from '../../providers/app-configurations/app-configurations';
 import * as moment from 'moment';
 import { LoginPage } from '../login/login';
 import { Storage } from '@ionic/storage';
@@ -44,12 +45,13 @@ export class DashboardV3Page implements OnInit {
 	counterReset = 0;
 	filterChangedCounter = 0;
 	cardOptions: Array<String> = [];
+	
 
 	public metrics = [
+		{ label: 'Revenue', isSelected: true },
+		{ label: 'Profit', isSelected: true },
         { label: 'Orders', isSelected: true },
         { label: 'Units', isSelected: true },
-        { label: 'Revenue', isSelected: true },
-        { label: 'Profit', isSelected: true },
         { label: 'Net ROI', isSelected: false },
         { label: 'Net Margin', isSelected: false },
         { label: 'PPC Revenue', isSelected: false },
@@ -70,7 +72,8 @@ export class DashboardV3Page implements OnInit {
 	public OrderProvider: OrderProvider,
 	public ProgressBarProvider: ProgressBarProvider,
 	public DashboardFilterProvider: DashboardFilterProvider,
-	public cdRef:ChangeDetectorRef) {
+	public cdRef:ChangeDetectorRef,
+	public AppConfigurationsProvider: AppConfigurationsProvider) {
 	
 		const date = <DateRange>{ intervalType: DateRangeType.Today, title: 'Today', start: undefined, end: undefined };
 		this.onFilterChanged(date);
@@ -78,11 +81,21 @@ export class DashboardV3Page implements OnInit {
 	}
 
 	ngOnInit() {
+		this.AppConfigurationsProvider.getDashboardCardOptions().then(response => {
+			if (response) 
+				this.metrics = response['data'].details.options;
+			// no idea why it works only with both foreach's	
+			this.metrics.forEach(element => {
+				if (element.isSelected == true) {
+					this.cardOptions.push(element.label)
+				}
+			});	
+		});
 		this.metrics.forEach(element => {
 			if (element.isSelected == true) {
 				this.cardOptions.push(element.label)
 			}
-		});	
+		});
 	}
 
 
@@ -270,6 +283,7 @@ export class DashboardV3Page implements OnInit {
 				metric.isSelected = false;
 			}
 		})
+		this.AppConfigurationsProvider.updateDashboardCardOptions(this.metrics);
 	}
 
 	customChartData(startDate, endDate) {

@@ -1,3 +1,3 @@
 export class AppConfig {
-	public static ServiceBase = 'https://staging.skyborg.io:8043/api'; 
+	public static ServiceBase = 'http://localhost:3000/api'; 
 }

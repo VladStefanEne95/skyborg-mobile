@@ -137,7 +137,7 @@ export class DashboardPage {
 			});
 	}
 
-
+    
 	monthToDateVsLastMonth() {
 		const lastMonth = () => {
 			return this.OrderProvider.getOrdersSalesStats([

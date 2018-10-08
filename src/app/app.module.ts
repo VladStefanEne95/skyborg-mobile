@@ -38,6 +38,7 @@ import { HandleErrorProvider } from '../providers/handle-error/handle-error';
 import { StateProvider } from '../providers/state/state';
 import { ProductProvider } from '../providers/product/product';
 import { ProductSetProvider } from '../providers/product-set/product-set';
+import { AppConfigurationsProvider } from '../providers/app-configurations/app-configurations';
 
 
 
@@ -94,7 +95,8 @@ import { ProductSetProvider } from '../providers/product-set/product-set';
     HandleErrorProvider,
     StateProvider,
     ProductProvider,
-    ProductSetProvider
+    ProductSetProvider,
+    AppConfigurationsProvider
   ]
 })
 export class AppModule {}
