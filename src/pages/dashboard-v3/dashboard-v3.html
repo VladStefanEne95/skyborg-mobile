@@ -79,6 +79,7 @@
 				</ion-card>                                                               
 			</ng-container>
 		</div>
+		<button (click)="addCard()">Add card</button>
 		<chart [data]="chartData" *ngIf="chartState" (chartPointData)="onChartPointDataChange($event)"></chart>
 		<date-filter (onFilter)="onFilterChanged($event)" [selectedDateRange]="dateToday"></date-filter>
 		

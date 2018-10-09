@@ -10,6 +10,9 @@ import { Storage } from '@ionic/storage';
 import { Chart } from 'chart.js';
 import { Select } from 'ionic-angular';
 
+import { ModalController } from 'ionic-angular';
+import { CalendarModal, CalendarModalOptions, CalendarComponentOptions, CalendarResult } from 'ion2-calendar';
+
 
 
 import * as $ from "jquery";
@@ -33,7 +36,8 @@ export class DashboardV3Page implements OnInit {
         start: moment().startOf('day'),
         end: moment().endOf('day'),
     };
-    dateRange: DateRange;
+	dateRange: DateRange;
+	selectedDateRange: Array<DateRange> = [];
     stats: Stat[] = [];
     statsExpanded = false;
     productDetails: Array<ProductDetails> = [];
@@ -46,6 +50,12 @@ export class DashboardV3Page implements OnInit {
 	filterChangedCounter = 0;
 	cardOptions: Array<String> = [];
 	
+	dates = {
+		intervalType: DateRangeType.CustomRange,
+		title: 'Custom Range',
+		start: moment().startOf('day'),
+		end: moment().endOf('day'),
+	};
 
 	public metrics = [
 		{ label: 'Revenue', isSelected: true },
@@ -73,7 +83,8 @@ export class DashboardV3Page implements OnInit {
 	public ProgressBarProvider: ProgressBarProvider,
 	public DashboardFilterProvider: DashboardFilterProvider,
 	public cdRef:ChangeDetectorRef,
-	public AppConfigurationsProvider: AppConfigurationsProvider) {
+	public AppConfigurationsProvider: AppConfigurationsProvider,
+	public modalCtrl: ModalController) {
 	
 		const date = <DateRange>{ intervalType: DateRangeType.Today, title: 'Today', start: undefined, end: undefined };
 		this.onFilterChanged(date);
@@ -81,19 +92,66 @@ export class DashboardV3Page implements OnInit {
 	}
 
 	ngOnInit() {
-		this.AppConfigurationsProvider.getDashboardCardOptions().then(response => {
-			if (response) 
-				this.metrics = response['data'].details.options;
+		this.AppConfigurationsProvider.getDashboardCards().then(response => {
+			// last card dissapears bcs of the next 2 lines
+			// if (response) 
+			// 	this.metrics = response['data'].details.options;
 			// no idea why it works only with both foreach's	
 			this.metrics.forEach(element => {
 				if (element.isSelected == true) {
 					this.cardOptions.push(element.label)
 				}
 			});	
+			if (response) {
+				this.selectedDateRange = response['data'].details.cards;
+				for (let i = 0; i < this.selectedDateRange.length; i++) {
+					this.selectedDateRange[i].start = moment(this.selectedDateRange[i].start);
+					this.selectedDateRange[i].end = moment(this.selectedDateRange[i].end);
+					this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[i])
+					.subscribe(res => {
+						if (res.title.dateName == "Custom Range") {
+							this.stats.push(Stat.fromJSON(res));
+							console.log(this.stats);
+							// this.counterArr.push(this.counterArr[this.counterArr.length - 1] + 1);
+						}
+					})
+				}
+			}
 		});
 		this.metrics.forEach(element => {
 			if (element.isSelected == true) {
 				this.cardOptions.push(element.label)
+			}
+		});
+	}
+
+	addCard() {
+		const options: CalendarModalOptions = {
+			pickMode: 'range',
+			title: 'Filter',
+			canBackwardsSelected: true,
+			to: new Date(),
+		};
+	
+		let myCalendar = this.modalCtrl.create(CalendarModal, {
+			options: options
+		});
+	
+		myCalendar.present();
+	
+		myCalendar.onDidDismiss((date, type) => {
+			if (type === 'done') {	
+				this.selectedDateRange.push(this.dates);
+				this.selectedDateRange[this.selectedDateRange.length - 1].start = moment(date.from.dateObj);
+				this.selectedDateRange[this.selectedDateRange.length - 1].end = moment(date.to.dateObj);
+				this.AppConfigurationsProvider.addCard(this.selectedDateRange, this.metrics);
+				this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[this.selectedDateRange.length - 1])
+				.subscribe(res => {
+					if (res.title.dateName == "Custom Range") {
+						this.stats.push(Stat.fromJSON(res));
+						this.counter = this.stats.length - 1;
+					}
+				})
 			}
 		});
 	}
@@ -109,7 +167,9 @@ export class DashboardV3Page implements OnInit {
   ngForRendred() {
 	let that = this;
 	this.counter++;
+	console.log(this.counter, this.stats.length);
 	if (this.counter == this.stats.length) {
+		console.log(this.counterArr[this.counterArr.length - 2]);
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('unslick');
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).css("display", "block");
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).css("display", "none");
@@ -120,7 +180,7 @@ export class DashboardV3Page implements OnInit {
 			centerPadding: '30px',
 			slidesToShow: 1
 		  });
-
+		  console.log("enter");
 		  $('.myCarousel' + this.counterArr[this.counterArr.length - 1]).on("beforeChange", function (event, slick, currentSlide, nextSlide) {
 			  if (nextSlide != currentSlide) {
 				that.sendDataToChart(that.stats[nextSlide]);
@@ -257,10 +317,7 @@ export class DashboardV3Page implements OnInit {
 
 	public menuIsOpen: boolean = false;
     public dateRangeIsOpen: boolean = false;
-    public selectedDateRange: Object = {
-        start : '',
-        end : ''
-    };
+
     
 	
     toggleMetrics(metric) {
@@ -323,13 +380,14 @@ export class DashboardV3Page implements OnInit {
 	}
 
 	sendDataToChart(stat) {
-		console.log(stat)
-		if (stat.title.dateRange.length == 10) {
-			this.monthToDateVsLastMonth();
-		} else {
-			let startDate = stat.title.dateRange.substring(0, 10);
-			let endDate = stat.title.dateRange.substring(13, 23);
-			this.customChartData(startDate, endDate);
+		if (stat) {
+			if (stat.title.dateRange.length == 10) {
+				this.monthToDateVsLastMonth();
+			} else {
+				let startDate = stat.title.dateRange.substring(0, 10);
+				let endDate = stat.title.dateRange.substring(13, 23);
+				this.customChartData(startDate, endDate);
+			}
 		}
 	}
 }

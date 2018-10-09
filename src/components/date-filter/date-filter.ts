@@ -20,9 +20,7 @@ export class DateFilterComponent implements OnInit {
 
 
 
-	constructor(
-		public modalCtrl: ModalController,
-	  ) { }
+	constructor(public modalCtrl: ModalController) { }
 	 
 	openCalendar() {
         const options: CalendarModalOptions = {

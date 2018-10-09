@@ -16,7 +16,7 @@ export class AppConfigurationsProvider {
     console.log('Hello AppConfigurationsProvider Provider');
   }
 
-  updateDashboardCardOptions(details : any): Promise<any> {
+  updateDashboardCardOptions(details: any): Promise<any> {
 	let newDetails = { options: details };
 	return this.http.post(this.url, JSON.stringify({ name : "dashboard", details : newDetails }), {headers : this.UserProvider.getHeaders()})
 		.toPromise()
@@ -25,7 +25,16 @@ export class AppConfigurationsProvider {
 		})
  }
 
- getDashboardCardOptions(): Promise<any> {
+ addCard(dateRange: any, metrics: any): Promise<any> {
+	let newDetails = {cards: dateRange, options: metrics };
+	return this.http.post(this.url, JSON.stringify({ name : "dashboard", details : newDetails }), {headers : this.UserProvider.getHeaders()})
+		.toPromise()
+		.then(response => {
+			return response;
+		})
+ }
+
+ getDashboardCards(): Promise<any> {
 	return this.http.get(this.url + "dashboard", { headers: this.UserProvider.getHeaders() })
 	.toPromise()
 	.then(response => { 
