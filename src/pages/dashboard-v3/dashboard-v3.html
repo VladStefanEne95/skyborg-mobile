@@ -27,6 +27,7 @@
 								{{stat.title?.dateRange}}
 							</div>
 						</div>
+						<ion-icon *ngIf="stat.title.dateName == 'Custom Range' && stats[0].title.dateName =='Today'" class="more" (click)="deleteCard(stat);$event.stopPropagation()"  name="close"></ion-icon>
 						<ion-icon class="more" (click)="toggleMenu();$event.stopPropagation()" name="more">
 						</ion-icon>
 					</ion-card-header>

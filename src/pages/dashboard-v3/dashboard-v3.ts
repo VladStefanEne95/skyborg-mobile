@@ -22,6 +22,7 @@ import { OrderProvider } from '../../providers/order/order';
 import { ProgressBarProvider } from '../../providers/progress-bar/progress-bar';
 import { DashboardFilterProvider } from '../../providers/dashboard-filter/dashboard-filter';
 
+
 @IonicPage()
 @Component({
   selector: 'page-dashboard-v3',
@@ -41,6 +42,7 @@ export class DashboardV3Page implements OnInit {
 	stats: Stat[] = [];
 	statsToday: Stat[] = [];
 	isFirstChartToday = 1;
+	numberOfCardsToday = 4;
     statsExpanded = false;
     productDetails: Array<ProductDetails> = [];
     chartData: Object;
@@ -188,15 +190,15 @@ export class DashboardV3Page implements OnInit {
 		// 	$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick('slickRemove', 4);
 
 		//   } else
-		   if (this.stats[0].title.dateName == "Today" && this.isFirstChartToday == 1) {
-			$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick('slickRemove', 4);
+		if (this.stats[0].title.dateName == "Today" && this.isFirstChartToday == 1) {
+			$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick('slickRemove', this.numberOfCardsToday);
 			this.isFirstChartToday = 0;
-		  }
+		}
 
-		  $('.myCarousel' + this.counterArr[this.counterArr.length - 1]).on("beforeChange", function (event, slick, currentSlide, nextSlide) {
-			  if (nextSlide != currentSlide) {
+		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).on("beforeChange", function (event, slick, currentSlide, nextSlide) {
+			if (nextSlide != currentSlide) {
 				that.sendDataToChart(that.stats[nextSlide]);
-			  }
+			}
 		})
 
 		  this.counterArr.push(this.counterArr[this.counterArr.length - 1] + 1);
@@ -403,5 +405,15 @@ export class DashboardV3Page implements OnInit {
 				this.customChartData(startDate, endDate);
 			}
 		}
+	}
+
+	deleteCard(stat) {
+		for (let i = 0; i < this.stats.length; i++)
+			if (this.stats[i] == stat) {
+				this.stats.splice(i, 1);
+				this.selectedDateRange.splice(i - this.numberOfCardsToday, 1);
+				this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
+				
+			}
 	}
 }
