@@ -146,7 +146,7 @@ export class DashboardV3Page implements OnInit {
 				this.selectedDateRange.push(this.dates);
 				this.selectedDateRange[this.selectedDateRange.length - 1].start = moment(date.from.dateObj);
 				this.selectedDateRange[this.selectedDateRange.length - 1].end = moment(date.to.dateObj);
-				this.AppConfigurationsProvider.addCard(this.selectedDateRange, this.metrics);
+				this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
 				this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[this.selectedDateRange.length - 1])
 				.subscribe(res => {
 					if (res.title.dateName == "Custom Range") {
@@ -354,7 +354,7 @@ export class DashboardV3Page implements OnInit {
 				metric.isSelected = false;
 			}
 		})
-		this.AppConfigurationsProvider.updateDashboardCardOptions(this.metrics);
+		this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
 	}
 
 	customChartData(startDate, endDate) {
