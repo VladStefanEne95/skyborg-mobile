@@ -38,7 +38,9 @@ export class DashboardV3Page implements OnInit {
     };
 	dateRange: DateRange;
 	selectedDateRange: Array<DateRange> = [];
-    stats: Stat[] = [];
+	stats: Stat[] = [];
+	statsToday: Stat[] = [];
+	isFirstChartToday = 1;
     statsExpanded = false;
     productDetails: Array<ProductDetails> = [];
     chartData: Object;
@@ -111,7 +113,7 @@ export class DashboardV3Page implements OnInit {
 					.subscribe(res => {
 						if (res.title.dateName == "Custom Range") {
 							this.stats.push(Stat.fromJSON(res));
-							console.log(this.stats);
+							this.statsToday.push(Stat.fromJSON(res));
 							// this.counterArr.push(this.counterArr[this.counterArr.length - 1] + 1);
 						}
 					})
@@ -167,9 +169,7 @@ export class DashboardV3Page implements OnInit {
   ngForRendred() {
 	let that = this;
 	this.counter++;
-	console.log(this.counter, this.stats.length);
 	if (this.counter == this.stats.length) {
-		console.log(this.counterArr[this.counterArr.length - 2]);
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('unslick');
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).css("display", "block");
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).css("display", "none");
@@ -180,7 +180,19 @@ export class DashboardV3Page implements OnInit {
 			centerPadding: '30px',
 			slidesToShow: 1
 		  });
-		  console.log("enter");
+		  console.log(this.stats);
+		  
+		  //remove the empty slide at the end
+		//   if (this.stats[0].title.dateName == "Today" && this.isFirstChartToday == 0) {
+		// 	this.stats = this.stats.concat(this.statsToday);
+		// 	$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick('slickRemove', 4);
+
+		//   } else
+		   if (this.stats[0].title.dateName == "Today" && this.isFirstChartToday == 1) {
+			$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick('slickRemove', 4);
+			this.isFirstChartToday = 0;
+		  }
+
 		  $('.myCarousel' + this.counterArr[this.counterArr.length - 1]).on("beforeChange", function (event, slick, currentSlide, nextSlide) {
 			  if (nextSlide != currentSlide) {
 				that.sendDataToChart(that.stats[nextSlide]);
@@ -284,7 +296,9 @@ export class DashboardV3Page implements OnInit {
 		let i = 0;
 		this.ProgressBarProvider.show();
 		this.DashboardFilterProvider.makeRequest$(dateRange)
-			.finally(() => this.ProgressBarProvider.hide())
+			.finally(() => {
+				this.ProgressBarProvider.hide()
+			})
 			.subscribe(response => {
 				this.stats[i] = Stat.fromJSON(response);
 				
