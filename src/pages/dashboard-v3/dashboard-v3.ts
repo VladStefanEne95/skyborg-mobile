@@ -412,8 +412,8 @@ export class DashboardV3Page implements OnInit {
 			if (this.stats[i] == stat) {
 				this.stats.splice(i, 1);
 				this.selectedDateRange.splice(i - this.numberOfCardsToday, 1);
-				this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
-				
-			}
+				this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);	
+				$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('slickRemove', i);
+		}
 	}
 }
