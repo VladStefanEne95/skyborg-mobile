@@ -9,6 +9,7 @@ import { LoginPage } from '../login/login';
 import { Storage } from '@ionic/storage';
 import { Chart } from 'chart.js';
 import { Select } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 
 import { ModalController } from 'ionic-angular';
 import { CalendarModal, CalendarModalOptions, CalendarComponentOptions, CalendarResult } from 'ion2-calendar';
@@ -51,6 +52,7 @@ export class DashboardV3Page implements OnInit {
 	chartState = 1;
 	counterArr = [0, 1];
 	counterReset = 0;
+	obsArr = [];
 	filterChangedCounter = 0;
 	cardOptions: Array<String> = [];
 	
@@ -90,8 +92,9 @@ export class DashboardV3Page implements OnInit {
 	public AppConfigurationsProvider: AppConfigurationsProvider,
 	public modalCtrl: ModalController) {
 	
-		const date = <DateRange>{ intervalType: DateRangeType.Today, title: 'Today', start: undefined, end: undefined };
-		this.onFilterChanged(date);
+	const date = <DateRange>{ intervalType: DateRangeType.Today, title: 'Today', start: undefined, end: undefined };
+	this.dateRange = date.start || date.end ? date : this.dateToday;
+	//	this.onFilterChanged(date);
 
 	}
 
@@ -108,18 +111,23 @@ export class DashboardV3Page implements OnInit {
 			});	
 			if (response) {
 				this.selectedDateRange = response['data'].details.cards;
+				this.selectedDateRange.sort((a,b) => (a['intervalType'] - b['intervalType']))
+				console.log(this.selectedDateRange, "aaaa")
 				for (let i = 0; i < this.selectedDateRange.length; i++) {
 					this.selectedDateRange[i].start = moment(this.selectedDateRange[i].start);
 					this.selectedDateRange[i].end = moment(this.selectedDateRange[i].end);
-					this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[i])
-					.subscribe(res => {
-						if (res.title.dateName == "Custom Range") {
-							this.stats.push(Stat.fromJSON(res));
-							this.statsToday.push(Stat.fromJSON(res));
-							// this.counterArr.push(this.counterArr[this.counterArr.length - 1] + 1);
-						}
-					})
+					this.obsArr.push(this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[i]))
 				}
+				Observable.forkJoin(this.obsArr)
+				.subscribe(responses => {
+					let i = 0;
+					responses.forEach(obj => {
+						obj['type'] = i % 4;
+						i++;
+						this.stats.push(Stat.fromJSON(obj))
+						console.log(this.stats)
+					})
+				})
 			}
 		});
 		this.metrics.forEach(element => {
@@ -164,14 +172,14 @@ export class DashboardV3Page implements OnInit {
   ngAfterViewInit() {
 	this.monthToDateVsLastMonth();
     this.things.changes.subscribe(t => {
-      this.ngForRendred();
+    	this.ngForRendred();
     })
   }
 
   ngForRendred() {
 	let that = this;
 	this.counter++;
-	if (this.counter == this.stats.length) {
+	if (this.counter == this.stats.length || this.counter == 1) {
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('unslick');
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).css("display", "block");
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).css("display", "none");
@@ -182,18 +190,12 @@ export class DashboardV3Page implements OnInit {
 			centerPadding: '30px',
 			slidesToShow: 1
 		  });
-		  console.log(this.stats);
 		  
 		  //remove the empty slide at the end
-		//   if (this.stats[0].title.dateName == "Today" && this.isFirstChartToday == 0) {
-		// 	this.stats = this.stats.concat(this.statsToday);
-		// 	$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick('slickRemove', 4);
-
-		//   } else
-		if (this.stats[0].title.dateName == "Today" && this.isFirstChartToday == 1) {
-			$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick('slickRemove', this.numberOfCardsToday);
-			this.isFirstChartToday = 0;
-		}
+		// if (this.stats[0].title.dateName == "Today" && this.isFirstChartToday == 1) {
+		// 	$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick('slickRemove', this.numberOfCardsToday);
+		// 	this.isFirstChartToday = 0;
+		// }
 
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).on("beforeChange", function (event, slick, currentSlide, nextSlide) {
 			if (nextSlide != currentSlide) {
@@ -323,7 +325,7 @@ export class DashboardV3Page implements OnInit {
 
 	onChartPointDataChange(event): void {	
 		this.chartPointData = event.data;
-		this.chartState = 0;
+		//this.chartState = 0;
 	}
 	onShowChartChange(event): void {
 		this.chartState = 1;
@@ -408,10 +410,11 @@ export class DashboardV3Page implements OnInit {
 	}
 
 	deleteCard(stat) {
+		console.log(this.selectedDateRange)
 		for (let i = 0; i < this.stats.length; i++)
 			if (this.stats[i] == stat) {
 				this.stats.splice(i, 1);
-				this.selectedDateRange.splice(i - this.numberOfCardsToday, 1);
+				this.selectedDateRange.splice(i, 1);
 				this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);	
 				$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('slickRemove', i);
 		}

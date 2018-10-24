@@ -28,24 +28,6 @@ export class DashboardFilterProvider {
 		endDate.clone().endOf('day'),
 		StatType.Green
 	));
-	result.push(new StatsRequestDate(
-		'7 Days',
-		startDate.clone().subtract(7, 'days').startOf('day'),
-		endDate.clone().subtract(1, 'days').endOf('day'),
-		StatType.Blue
-	));
-	result.push(new StatsRequestDate(
-		'14 Days',
-		startDate.clone().subtract(14, 'days').startOf('day'),
-		endDate.clone().subtract(1, 'days').endOf('day'),
-		StatType.Orange
-	));
-	result.push(new StatsRequestDate(
-		'30 days',
-		startDate.clone().subtract(30, 'days').startOf('day'),
-		endDate.clone().subtract(1, 'days').endOf('day'),
-		StatType.Red
-	));
 	return result;
 }
 
@@ -55,59 +37,12 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 	if (numberOfDays === 0) {
 		const isToday = moment().diff(range.end, 'days') === 0;
 		return this.processOneDay(isToday ? undefined : range);
-	}
-	if (numberOfDays > 0 && numberOfDays <= 7) {
+	} else {
 		result.push(new StatsRequestDate(
 			'Custom Range',
 			range.start.clone().startOf('day'),
 			range.end.clone().endOf('day'),
 			StatType.Green
-		));
-		result.push(new StatsRequestDate(
-			'Same Time Prev Week',
-			range.start.clone().subtract(1, 'weeks').startOf('day'),
-			range.end.clone().subtract(1, 'weeks').endOf('day'),
-			StatType.Blue
-		));
-		result.push(new StatsRequestDate(
-			'Same Time Prev Year',
-			range.start.clone().subtract(1, 'years').startOf('day'),
-			range.end.clone().subtract(1, 'years').endOf('day'),
-			StatType.Orange
-		));
-	}
-	if (numberOfDays > 7 && numberOfDays <= 30) {
-		result.push(new StatsRequestDate(
-			'Custom Range',
-			range.start.clone().startOf('day'),
-			range.end.clone().endOf('day'),
-			StatType.Green
-		));
-		result.push(new StatsRequestDate(
-			'Same Time Prev Month',
-			range.start.clone().subtract(1, 'months').startOf('day'),
-			range.end.clone().subtract(1, 'months').endOf('day'),
-			StatType.Blue
-		));
-		result.push(new StatsRequestDate(
-			'Same Time Prev Year',
-			range.start.clone().subtract(1, 'years').startOf('day'),
-			range.end.clone().subtract(1, 'years').endOf('day'),
-			StatType.Orange
-		));
-	}
-	if (numberOfDays > 30) {
-		result.push(new StatsRequestDate(
-			'Custom Range',
-			range.start.clone().startOf('day'),
-			range.end.clone().endOf('day'),
-			StatType.Green
-		));
-		result.push(new StatsRequestDate(
-			'Same Time Prev Year',
-			range.start.clone().subtract(1, 'years').startOf('day'),
-			range.end.clone().subtract(1, 'years').endOf('day'),
-			StatType.Orange
 		));
 	}
 	return result;
@@ -128,24 +63,6 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 				moment().subtract(1, 'days').endOf('day'),
 				StatType.Green
 			));
-			result.push(new StatsRequestDate(
-				'7 Days',
-				moment().subtract(9, 'days').startOf('day'),
-				moment().subtract(2, 'days').endOf('day'),
-				StatType.Blue
-			));
-			result.push(new StatsRequestDate(
-				'14 Days',
-				moment().subtract(16, 'days').startOf('day'),
-				moment().subtract(2, 'days').endOf('day'),
-				StatType.Orange
-			));
-			result.push(new StatsRequestDate(
-				'30 days',
-				moment().subtract(32, 'days').startOf('day'),
-				moment().subtract(2, 'days').endOf('day'),
-				StatType.Red
-			));
 			break;
 		}
 		case DateRangeType.Last7Days: {
@@ -154,18 +71,6 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 				moment().subtract(8, 'days').startOf('day'),
 				moment().subtract(1, 'days').endOf('day'),
 				StatType.Green
-			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Week',
-				moment().subtract(15, 'days').startOf('day'),
-				moment().subtract(8, 'days').endOf('day'),
-				StatType.Blue
-			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Year',
-				moment().subtract(53, 'weeks').startOf('day'),
-				moment().subtract(52, 'weeks').endOf('day'),
-				StatType.Orange
 			));
 			break;
 		}
@@ -176,12 +81,6 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 				moment().subtract(1, 'days').endOf('day'),
 				StatType.Green
 			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Year',
-				moment().subtract(13, 'months').startOf('day'),
-				moment().subtract(12, 'months').endOf('day'),
-				StatType.Blue
-			));
 			break;
 		}
 		case DateRangeType.Last60Days: {
@@ -190,12 +89,6 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 				moment().subtract(60, 'days').startOf('day'),
 				moment().subtract(1, 'days').endOf('day'),
 				StatType.Green
-			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Year',
-				moment().subtract(14, 'months').startOf('day'),
-				moment().subtract(12, 'months').endOf('day'),
-				StatType.Blue
 			));
 			break;
 		}
@@ -206,12 +99,6 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 				moment().subtract(1, 'days').endOf('day'),
 				StatType.Green
 			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Year',
-				moment().subtract(15, 'months').startOf('day'),
-				moment().subtract(12, 'months').endOf('day'),
-				StatType.Blue
-			));
 			break;
 		}
 		case DateRangeType.ThisMonth: {
@@ -220,18 +107,6 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 				moment().startOf('month'),
 				moment().endOf('day'),
 				StatType.Green
-			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Month',
-				moment().subtract(1, 'month').startOf('month'),
-				moment().subtract(1, 'month').endOf('month'),
-				StatType.Blue
-			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Year',
-				moment().subtract(1, 'years').startOf('month'),
-				moment().subtract(1, 'years'),
-				StatType.Orange
 			));
 			break;
 		}
@@ -242,18 +117,6 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 				moment().subtract(1, 'month').endOf('month'),
 				StatType.Green
 			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Month',
-				moment().subtract(2, 'month').startOf('month'),
-				moment().subtract(2, 'month').endOf('month'),
-				StatType.Blue
-			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Year',
-				moment().subtract(13, 'month').startOf('month'),
-				moment().subtract(13, 'month').endOf('month'),
-				StatType.Orange
-			));
 			break;
 		}
 		case DateRangeType.ThreeMonthsAgo: {
@@ -262,18 +125,6 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 				moment().subtract(2, 'month').startOf('month'),
 				moment().subtract(2, 'month').endOf('month'),
 				StatType.Green
-			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Month',
-				moment().subtract(3, 'month').startOf('month'),
-				moment().subtract(3, 'month').endOf('month'),
-				StatType.Blue
-			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Year',
-				moment().subtract(14, 'month').startOf('month'),
-				moment().subtract(14, 'month').endOf('month'),
-				StatType.Orange
 			));
 			break;
 		}
@@ -284,12 +135,6 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 				moment().subtract(1, 'year').endOf('year'),
 				StatType.Green
 			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Year',
-				moment().subtract(2, 'year').startOf('year'),
-				moment().subtract(2, 'year').endOf('year'),
-				StatType.Blue
-			));
 			break;
 		}
 		case DateRangeType.YearToDate: {
@@ -298,12 +143,6 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 				moment().startOf('year'),
 				moment().endOf('day'),
 				StatType.Green
-			));
-			result.push(new StatsRequestDate(
-				'Same Time Prev Year',
-				moment().subtract(1, 'year').startOf('year'),
-				moment().subtract(1, 'year').endOf('day'),
-				StatType.Blue
 			));
 			break;
 		}

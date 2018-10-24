@@ -17,7 +17,7 @@ export class AppConfigurationsProvider {
   }
 
   updateDashboardCards(dateRange: any, metrics: any): Promise<any> {
-	let newDetails = {cards: dateRange, options: metrics };
+	let newDetails = { cards: dateRange, options: metrics };
 	return this.http.post(this.url, JSON.stringify({ name : "dashboard", details : newDetails }), {headers : this.UserProvider.getHeaders()})
 		.toPromise()
 		.then(response => {
