@@ -68,7 +68,7 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 		case DateRangeType.Last7Days: {
 			result.push(new StatsRequestDate(
 				'Last 7 Days',
-				moment().subtract(8, 'days').startOf('day'),
+				moment().subtract(7, 'days').startOf('day'),
 				moment().subtract(1, 'days').endOf('day'),
 				StatType.Green
 			));
@@ -122,8 +122,8 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 		case DateRangeType.ThreeMonthsAgo: {
 			result.push(new StatsRequestDate(
 				'Three Months Ago',
-				moment().subtract(2, 'month').startOf('month'),
-				moment().subtract(2, 'month').endOf('month'),
+				moment().subtract(3, 'month').startOf('month'),
+				moment().subtract(3, 'month').endOf('month'),
 				StatType.Green
 			));
 			break;

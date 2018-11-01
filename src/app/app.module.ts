@@ -21,7 +21,8 @@ import { StatsCardComponent } from '../components/stats-card/stats-card';
 import { DateFilterComponent } from '../components/date-filter/date-filter';
 import { SelectMarketplaceComponent } from '../components/select-marketplace/select-marketplace';
 import { SelectOrganizationComponent } from '../components/select-organization/select-organization';
-
+import { AddCardModalComponent } from '../components/add-card-modal/add-card-modal';
+import {DpDatePickerModule} from 'ng2-date-picker';
 
 import { SlickModule } from 'ngx-slick';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -55,6 +56,7 @@ import { AppConfigurationsProvider } from '../providers/app-configurations/app-c
 	StatsCardComponent,
 	SelectMarketplaceComponent,
 	SelectOrganizationComponent,
+	AddCardModalComponent,
 	DashboardPage,
     ListPage
   ],
@@ -67,6 +69,7 @@ import { AppConfigurationsProvider } from '../providers/app-configurations/app-c
 	IonicStorageModule.forRoot(),
 	IonicModule.forRoot(MyApp),
 	CalendarModule,
+	DpDatePickerModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -75,6 +78,7 @@ import { AppConfigurationsProvider } from '../providers/app-configurations/app-c
 	HijacksPage,
 	DashboardPage,
 	DashboardV3Page,
+	AddCardModalComponent,
 	LoginPage,
     ListPage
   ],

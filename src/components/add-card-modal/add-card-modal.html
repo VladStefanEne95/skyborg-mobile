@@ -1,0 +1,51 @@
+<div>
+	<h1 class="dialog-title" mat-dialog-title>Select date range</h1>
+	<div class="modal-container">
+		<div class="preset-column">
+			<h3>Preset Ranges</h3>
+			<div [ngClass]="presetElement==1 ? 'preset-active' : ''" class="preset-title" (click)="today()">
+				Today
+			</div>
+			<div [ngClass]="presetElement==2 ? 'preset-active' : ''" class="preset-title" (click)="yesterday()">
+				Yesterday
+			</div>
+			<div [ngClass]="presetElement==3 ? 'preset-active' : ''" class="preset-title" (click)="lastSevenDays()">
+				Last 7 days
+			</div>
+			<div [ngClass]="presetElement==4 ? 'preset-active' : ''" class="preset-title" (click)="lastThirtyDays()">
+				Last 30 days
+			</div>
+			<div [ngClass]="presetElement==5 ? 'preset-active' : ''" class="preset-title" (click)="lastSixtyDays()">
+				Last 60 days
+			</div>
+			<div [ngClass]="presetElement==6 ? 'preset-active' : ''" class="preset-title" (click)="lastNinetyDays()">
+				Last 90 days
+			</div>
+			<div [ngClass]="presetElement==7 ? 'preset-active' : ''" class="preset-title" (click)="thisMonth()">
+				This month
+			</div>
+			<div [ngClass]="presetElement==8 ? 'preset-active' : ''" class="preset-title" (click)="lastMonth()">
+				Last month
+			</div>
+			<div [ngClass]="presetElement==9 ? 'preset-active' : ''" class="preset-title" (click)="threeMonthsAgo()">
+				Three Months Ago
+			</div>
+			<div [ngClass]="presetElement==10 ? 'preset-active' : ''" class="preset-title" (click)="lastYear()">
+				Last year
+			</div>
+			<div [ngClass]="presetElement==11 ? 'preset-active' : ''" class="preset-title" (click)="yearToDate()">
+				Year to date
+			</div>
+		</div>
+		<div class="custom-column">
+			<h3>Custom Ranges</h3>
+			<dp-day-calendar [(ngModel)]="selectedDateStart" (onSelect)="startSelected()"  [config]="config" theme="dp-material"></dp-day-calendar> 
+			<dp-day-calendar [(ngModel)]="selectedDateEnd" [config]="config" (onSelect)="endSelected()" theme="dp-material"></dp-day-calendar> 
+		</div>
+	</div>
+</div>
+<div class="modal-buttons">
+	<button mat-button (click)="onNoClick()" class="cancel-button">CACNEL</button>
+	<button *ngIf="!data" mat-button (click)="addNewCard()" class="apply-button">ADD</button>
+	<button *ngIf="data" mat-button (click)="addNewCard()" class="apply-button">EDIT</button>
+</div>

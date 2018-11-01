@@ -10,6 +10,7 @@ import { Storage } from '@ionic/storage';
 import { Chart } from 'chart.js';
 import { Select } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { AddCardModalComponent } from '../../components/add-card-modal/add-card-modal';
 
 import { ModalController } from 'ionic-angular';
 import { CalendarModal, CalendarModalOptions, CalendarComponentOptions, CalendarResult } from 'ion2-calendar';
@@ -92,13 +93,15 @@ export class DashboardV3Page implements OnInit {
 	public AppConfigurationsProvider: AppConfigurationsProvider,
 	public modalCtrl: ModalController) {
 	
-	const date = <DateRange>{ intervalType: DateRangeType.Today, title: 'Today', start: undefined, end: undefined };
-	this.dateRange = date.start || date.end ? date : this.dateToday;
+	// const date = <DateRange>{ intervalType: DateRangeType.Today, title: 'Today', start: undefined, end: undefined };
+	// this.dateRange = date.start || date.end ? date : this.dateToday;
 	//	this.onFilterChanged(date);
 
 	}
 
 	ngOnInit() {
+		const date = <DateRange>{ intervalType: DateRangeType.Today, title: 'Today', start: undefined, end: undefined };
+		this.dateRange = date.start || date.end ? date : this.dateToday;
 		this.AppConfigurationsProvider.getDashboardCards().then(response => {
 			// last card dissapears bcs of the next 2 lines
 			// if (response) 
@@ -112,7 +115,7 @@ export class DashboardV3Page implements OnInit {
 			if (response) {
 				this.selectedDateRange = response['data'].details.cards;
 				this.selectedDateRange.sort((a,b) => (a['intervalType'] - b['intervalType']))
-				console.log(this.selectedDateRange, "aaaa")
+
 				for (let i = 0; i < this.selectedDateRange.length; i++) {
 					this.selectedDateRange[i].start = moment(this.selectedDateRange[i].start);
 					this.selectedDateRange[i].end = moment(this.selectedDateRange[i].end);
@@ -125,7 +128,6 @@ export class DashboardV3Page implements OnInit {
 						obj['type'] = i % 4;
 						i++;
 						this.stats.push(Stat.fromJSON(obj))
-						console.log(this.stats)
 					})
 				})
 			}
@@ -145,27 +147,35 @@ export class DashboardV3Page implements OnInit {
 			to: new Date(),
 		};
 	
-		let myCalendar = this.modalCtrl.create(CalendarModal, {
-			options: options
-		});
+		let addCardModal = this.modalCtrl.create(AddCardModalComponent, { userId: 8675309 });
+		addCardModal.onDidDismiss(data => {
+			console.log(data);
+			delete data['editedData']; 
+			this.selectedDateRange.push(data);
+			this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
+			this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[this.selectedDateRange.length - 1])
+			.subscribe(res => {
+				this.stats.push(Stat.fromJSON(res));
+				this.counter = this.stats.length - 1;
+			})
+		  });
+		  addCardModal.present();
 	
-		myCalendar.present();
-	
-		myCalendar.onDidDismiss((date, type) => {
-			if (type === 'done') {	
-				this.selectedDateRange.push(this.dates);
-				this.selectedDateRange[this.selectedDateRange.length - 1].start = moment(date.from.dateObj);
-				this.selectedDateRange[this.selectedDateRange.length - 1].end = moment(date.to.dateObj);
-				this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
-				this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[this.selectedDateRange.length - 1])
-				.subscribe(res => {
-					if (res.title.dateName == "Custom Range") {
-						this.stats.push(Stat.fromJSON(res));
-						this.counter = this.stats.length - 1;
-					}
-				})
-			}
-		});
+		// myCalendar.onDidDismiss((date, type) => {
+		// 	if (type === 'done') {	
+		// 		this.selectedDateRange.push(this.dates);
+		// 		this.selectedDateRange[this.selectedDateRange.length - 1].start = moment(date.from.dateObj);
+		// 		this.selectedDateRange[this.selectedDateRange.length - 1].end = moment(date.to.dateObj);
+		// 		this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
+		// 		this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[this.selectedDateRange.length - 1])
+		// 		.subscribe(res => {
+		// 			if (res.title.dateName == "Custom Range") {
+		// 				this.stats.push(Stat.fromJSON(res));
+		// 				this.counter = this.stats.length - 1;
+		// 			}
+		// 		})
+		// 	}
+		// });
 	}
 
 
@@ -325,7 +335,7 @@ export class DashboardV3Page implements OnInit {
 
 	onChartPointDataChange(event): void {	
 		this.chartPointData = event.data;
-		//this.chartState = 0;
+		this.chartState = 0;
 	}
 	onShowChartChange(event): void {
 		this.chartState = 1;
@@ -410,7 +420,6 @@ export class DashboardV3Page implements OnInit {
 	}
 
 	deleteCard(stat) {
-		console.log(this.selectedDateRange)
 		for (let i = 0; i < this.stats.length; i++)
 			if (this.stats[i] == stat) {
 				this.stats.splice(i, 1);

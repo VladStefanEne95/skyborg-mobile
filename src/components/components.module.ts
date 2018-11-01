@@ -5,19 +5,22 @@ import { BreakdownComponent } from './breakdown/breakdown';
 import { DateFilterComponent } from './date-filter/date-filter';
 import { SelectMarketplaceComponent } from './select-marketplace/select-marketplace';
 import { SelectOrganizationComponent } from './select-organization/select-organization';
+import { AddCardModalComponent } from './add-card-modal/add-card-modal';
 @NgModule({
 	declarations: [ChartComponent,
     StatsCardComponent,
     BreakdownComponent,
     DateFilterComponent,
     SelectMarketplaceComponent,
-    SelectOrganizationComponent],
+    SelectOrganizationComponent,
+    AddCardModalComponent],
 	imports: [],
 	exports: [ChartComponent,
     StatsCardComponent,
     BreakdownComponent,
     DateFilterComponent,
     SelectMarketplaceComponent,
-    SelectOrganizationComponent]
+    SelectOrganizationComponent,
+    AddCardModalComponent]
 })
 export class ComponentsModule {}
