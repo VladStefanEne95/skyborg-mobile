@@ -105,8 +105,10 @@ export class AddCardModalComponent {
     ];
 
 
-  constructor(public viewCtrl: ViewController) {
-    console.log('Hello AddCardModalComponent Component');
+  constructor(public viewCtrl: ViewController, params: NavParams) {
+	console.log('Hello AddCardModalComponent Component');
+	if (params.get('data'))
+		this.data = params.get('data')
   }
 
   ngOnInit() {
@@ -117,7 +119,7 @@ export class AddCardModalComponent {
 	
 	if (this.data) {
 		this.isPreset = true;
-		switch(this.data['dateRange'].intervalType) {
+		switch(this.data.intervalType) {
 			case DateRangeType.Today:
 				this.today();
 				break;
@@ -156,8 +158,8 @@ export class AddCardModalComponent {
 				this.title = "Custom Range";
 				this.isPreset = false;
 				this.presetElement = -1;
-				this.selectedDateStart = this.data['dateRange'].start;
-				this.selectedDateEnd = this.data['dateRange'].end;
+				this.selectedDateStart = this.data.start;
+				this.selectedDateEnd = this.data.end;
 				break;
 		}
 	}
@@ -165,7 +167,7 @@ export class AddCardModalComponent {
 }
 
 onNoClick() {
-	this.viewCtrl.dismiss({});
+	this.viewCtrl.dismiss();
 }
 
 addNewCard() {
@@ -204,10 +206,14 @@ editCard() {
 		this.selectedDateEnd = tmp;
 	}
 
+	let emitData;
+
 	if (this.isPreset)
-		this.onAdd.emit({start:this.selectedDateStart2, end:this.selectedDateEnd2, intervalType: this.intervalType, title: this.title, editedData: this.data});
+		emitData = { start:this.selectedDateStart2, end:this.selectedDateEnd2, intervalType: this.intervalType, title: this.title, editedData: this.data };
 	else
-		this.onAdd.emit({start:this.selectedDateStart, end:this.selectedDateEnd, intervalType: this.intervalType, title: this.title, editedData: this.data});
+		emitData = { start:this.selectedDateStart, end:this.selectedDateEnd, intervalType: this.intervalType, title: this.title, editedData: this.data };
+
+	this.viewCtrl.dismiss(emitData);
 }
 
 startSelected() {

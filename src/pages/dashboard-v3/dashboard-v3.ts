@@ -54,6 +54,8 @@ export class DashboardV3Page implements OnInit {
 	counterArr = [0, 1];
 	counterReset = 0;
 	obsArr = [];
+	removeSlideAfterEdit = false;
+	lastEditedSlider = -2;
 	filterChangedCounter = 0;
 	cardOptions: Array<String> = [];
 	
@@ -91,13 +93,7 @@ export class DashboardV3Page implements OnInit {
 	public DashboardFilterProvider: DashboardFilterProvider,
 	public cdRef:ChangeDetectorRef,
 	public AppConfigurationsProvider: AppConfigurationsProvider,
-	public modalCtrl: ModalController) {
-	
-	// const date = <DateRange>{ intervalType: DateRangeType.Today, title: 'Today', start: undefined, end: undefined };
-	// this.dateRange = date.start || date.end ? date : this.dateToday;
-	//	this.onFilterChanged(date);
-
-	}
+	public modalCtrl: ModalController) {}
 
 	ngOnInit() {
 		const date = <DateRange>{ intervalType: DateRangeType.Today, title: 'Today', start: undefined, end: undefined };
@@ -119,7 +115,8 @@ export class DashboardV3Page implements OnInit {
 				for (let i = 0; i < this.selectedDateRange.length; i++) {
 					this.selectedDateRange[i].start = moment(this.selectedDateRange[i].start);
 					this.selectedDateRange[i].end = moment(this.selectedDateRange[i].end);
-					this.obsArr.push(this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[i]))
+					this.selectedDateRange[i] = this.DashboardFilterProvider.processPresetDateRange(this.selectedDateRange[i]);
+					this.obsArr.push(this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[i]));
 				}
 				Observable.forkJoin(this.obsArr)
 				.subscribe(responses => {
@@ -140,43 +137,61 @@ export class DashboardV3Page implements OnInit {
 	}
 
 	addCard() {
-		const options: CalendarModalOptions = {
-			pickMode: 'range',
-			title: 'Filter',
-			canBackwardsSelected: true,
-			to: new Date(),
-		};
 	
-		let addCardModal = this.modalCtrl.create(AddCardModalComponent, { userId: 8675309 });
+		let addCardModal = this.modalCtrl.create(AddCardModalComponent, {});
 		addCardModal.onDidDismiss(data => {
-			console.log(data);
-			delete data['editedData']; 
-			this.selectedDateRange.push(data);
-			this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
-			this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[this.selectedDateRange.length - 1])
-			.subscribe(res => {
-				this.stats.push(Stat.fromJSON(res));
-				this.counter = this.stats.length - 1;
-			})
+			if (data) {
+				for (let i = 0; i < this.selectedDateRange.length; i++) {
+					if (this.selectedDateRange[i].intervalType == data.intervalType && data.intervalType != 11) {
+						return;
+					}
+				}
+				delete data['editedData']; 
+				this.selectedDateRange.push(data);
+				this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
+				this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[this.selectedDateRange.length - 1])
+				.subscribe(res => {
+					this.stats.push(Stat.fromJSON(res));
+					this.sendDataToChart(this.stats[this.stats.length - 1]);
+					this.counter = this.stats.length - 1;
+				})	
+			}
 		  });
 		  addCardModal.present();
 	
-		// myCalendar.onDidDismiss((date, type) => {
-		// 	if (type === 'done') {	
-		// 		this.selectedDateRange.push(this.dates);
-		// 		this.selectedDateRange[this.selectedDateRange.length - 1].start = moment(date.from.dateObj);
-		// 		this.selectedDateRange[this.selectedDateRange.length - 1].end = moment(date.to.dateObj);
-		// 		this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
-		// 		this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[this.selectedDateRange.length - 1])
-		// 		.subscribe(res => {
-		// 			if (res.title.dateName == "Custom Range") {
-		// 				this.stats.push(Stat.fromJSON(res));
-		// 				this.counter = this.stats.length - 1;
-		// 			}
-		// 		})
-		// 	}
-		// });
 	}
+
+	editCard(index) {
+			let addCardModal = this.modalCtrl.create(AddCardModalComponent, {data: this.selectedDateRange[index]});
+			addCardModal.onDidDismiss(data => {
+				if (data) {
+					for (let i = 0; i < this.selectedDateRange.length; i++) {
+						if (this.selectedDateRange[i].intervalType == data.intervalType && data.intervalType != 11) {
+							return;
+						}
+					}
+
+					this.selectedDateRange[index].intervalType = data.intervalType;
+					this.selectedDateRange[index].title = data.title;
+					this.selectedDateRange[index].start = data.start;
+					this.selectedDateRange[index].end = data.end;
+					
+					this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
+					this.DashboardFilterProvider.makeRequest$(data)
+					.subscribe(res => {
+						res['type'] = this.stats[index].type;
+						this.stats[index] = (Stat.fromJSON(res));
+						this.sendDataToChart(this.stats[index]);
+						this.removeSlideAfterEdit = true;
+						this.lastEditedSlider = index + 1;
+						this.counter = this.stats.length - 1;
+					})
+					
+				}
+			  });
+			  addCardModal.present();
+		
+		}
 
 
   ngAfterViewInit() {
@@ -201,6 +216,12 @@ export class DashboardV3Page implements OnInit {
 			slidesToShow: 1
 		  });
 		  
+		  //remove the extra empty slide after a edit, no idea why it appears
+		if (this.removeSlideAfterEdit) {
+			$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick('slickRemove', this.lastEditedSlider);
+			this.removeSlideAfterEdit = false;
+			this.lastEditedSlider = -2;
+		}
 		  //remove the empty slide at the end
 		// if (this.stats[0].title.dateName == "Today" && this.isFirstChartToday == 1) {
 		// 	$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick('slickRemove', this.numberOfCardsToday);
@@ -214,7 +235,7 @@ export class DashboardV3Page implements OnInit {
 		})
 
 		  this.counterArr.push(this.counterArr[this.counterArr.length - 1] + 1);
-		 
+
 		  if (this.counterReset != -1)
 			this.counterReset = -1;
 		 //  this.stats.push(JSON.parse(JSON.stringify(this.stats[0])));
@@ -428,4 +449,15 @@ export class DashboardV3Page implements OnInit {
 				$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('slickRemove', i);
 		}
 	}
+	objectsAreSame(x, y) {
+		var objectsAreSame = true;
+		for(var propertyName in x) {
+		   if(x[propertyName] !== y[propertyName]) {
+			  objectsAreSame = false;
+			  break;
+		   }
+		}
+		return objectsAreSame;
+	 }
+		
 }

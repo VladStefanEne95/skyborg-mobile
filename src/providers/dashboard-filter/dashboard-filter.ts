@@ -12,6 +12,81 @@ import { StatsProvider } from '../stats/stats';
 @Injectable()
 export class DashboardFilterProvider {
 
+	dates: DateRange[] = [
+        {
+            intervalType: DateRangeType.Today,
+            title: 'Today',
+            start: moment().startOf('day'),
+            end: moment().endOf('day'),
+        },
+        {
+            intervalType: DateRangeType.Yesterday,
+            title: 'Yesterday',
+            start: moment().subtract(1, 'days').startOf('day'),
+            end: moment().subtract(1, 'days').endOf('day')
+        },
+        {
+            intervalType: DateRangeType.Last7Days,
+            title: 'Last 7 Days',
+            start: moment().subtract(7, 'days').startOf('day'),
+            end: moment().subtract(1, 'days').endOf('day')
+        },
+        {
+            intervalType: DateRangeType.Last30Days,
+            title: 'Last 30 Days',
+            start: moment().subtract(30, 'days').startOf('day'),
+            end: moment().subtract(1, 'days').endOf('day')
+        },
+        {
+            intervalType: DateRangeType.Last60Days,
+            title: 'Last 60 Days',
+            start: moment().subtract(60, 'days').startOf('day'),
+            end: moment().subtract(1, 'days').endOf('day')
+        },
+        {
+            intervalType: DateRangeType.Last90Days,
+            title: 'Last 90 Days',
+            start: moment().subtract(90, 'days').startOf('day'),
+            end: moment().subtract(1, 'days').endOf('day')
+        },
+        {
+            intervalType: DateRangeType.ThisMonth,
+            title: 'This Month',
+            start: moment().startOf('month'),
+            end: moment().endOf('day')
+        },
+        {
+            intervalType: DateRangeType.LastMonth,
+            title: 'Last Month',
+            start: moment().subtract(1, 'month').startOf('month'),
+            end: moment().subtract(1, 'month').endOf('month')
+        },
+        {
+            intervalType: DateRangeType.ThreeMonthsAgo,
+            title: 'Three Months Ago',
+            start: moment().subtract(3, 'month').startOf('month'),
+            end: moment().subtract(3, 'month').endOf('month')
+        },
+        {
+            intervalType: DateRangeType.LastYear,
+            title: 'Last Year',
+            start: moment().subtract(1, 'year').startOf('year'),
+            end: moment().subtract(1, 'year').endOf('year')
+        },
+        {
+            intervalType: DateRangeType.YearToDate,
+            title: 'Year to Date',
+            start: moment().startOf('year'),
+            end: moment().subtract(1, 'days').endOf('day')
+        },
+        {
+            intervalType: DateRangeType.CustomRange,
+            title: 'Custom Range',
+            start: moment().startOf('day'),
+            end: moment().endOf('day'),
+        },
+    ];
+
   constructor(public http: HttpClient, public StatsProvider: StatsProvider) {
     console.log('Hello DashboardFilterProvider Provider');
   }
@@ -46,6 +121,17 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 		));
 	}
 	return result;
+}
+
+processPresetDateRange(dateRange): DateRange {
+	
+	if (dateRange.intervalType == DateRangeType.CustomRange)
+		return dateRange;
+	
+	for (let i = 0; i < this.dates.length; i++) {
+		if (dateRange.intervalType == this.dates[i].intervalType)
+			return this.dates[i];
+	}
 }
 
 
