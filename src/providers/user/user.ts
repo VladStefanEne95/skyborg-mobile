@@ -62,7 +62,6 @@ export class UserProvider {
 			});
 		}
 	})
-
 	this.storage.get('marketplace').then(val => {
 		if (val)
 			this.marketplace = val;

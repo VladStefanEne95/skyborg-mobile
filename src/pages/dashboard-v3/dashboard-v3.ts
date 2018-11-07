@@ -11,6 +11,7 @@ import { Chart } from 'chart.js';
 import { Select } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { AddCardModalComponent } from '../../components/add-card-modal/add-card-modal';
+import { cloneDeep, isEqual } from 'lodash';
 
 import { ModalController } from 'ionic-angular';
 import { CalendarModal, CalendarModalOptions, CalendarComponentOptions, CalendarResult } from 'ion2-calendar';
@@ -77,7 +78,27 @@ export class DashboardV3Page implements OnInit {
         { label: 'Organic Revenue', isSelected: false },
         { label: 'Refunded Units', isSelected: false },
         { label: 'Promo Units', isSelected: false }
+	];
+	
+	public productsMetrics = [
+		{ label: 'Revenue', isSelected: true },
+		{ label: 'Profit', isSelected: true },
+        { label: 'Orders', isSelected: true },
+        { label: 'Units', isSelected: true },
+        { label: 'Net ROI', isSelected: false },
+        { label: 'Net Margin', isSelected: false },
+        { label: 'PPC Revenue', isSelected: false },
+        { label: 'Organic Revenue', isSelected: false },
+        { label: 'Refunded Units', isSelected: false },
+        { label: 'Promo Units', isSelected: false }
+	];
+	
+	public metricsHeader: Object = [
+        { label: 'ASIN', isSelected: true },
+        { label: 'SKU', isSelected: false },
+        { label: 'FNSKU', isSelected: false },
     ];
+    
 
 
 	@ViewChild('selectOptions') select1: Select;
@@ -99,22 +120,20 @@ export class DashboardV3Page implements OnInit {
 		const date = <DateRange>{ intervalType: DateRangeType.Today, title: 'Today', start: undefined, end: undefined };
 		this.dateRange = date.start || date.end ? date : this.dateToday;
 		this.AppConfigurationsProvider.getDashboardCards().then(response => {
-			// last card dissapears bcs of the next 2 lines
-			// if (response) 
-			// 	this.metrics = response['data'].details.options;
-			// no idea why it works only with both foreach's	
-			this.metrics.forEach(element => {
-				if (element.isSelected == true) {
-					this.cardOptions.push(element.label)
-				}
-			});	
+
 			if (response) {
 				this.selectedDateRange = response['data'].details.cards;
+				this.metricsHeader = response['data'].details.metricsHeader;
+				this.productsMetrics = response['data'].details.productMetrics;
+				this.metrics = response['data'].details.options;
+				this.metrics.forEach(element => {
+					if (element.isSelected == true) {
+						this.cardOptions.push(element.label)
+					}
+				});	
 				this.selectedDateRange.sort((a,b) => (a['intervalType'] - b['intervalType']))
 
 				for (let i = 0; i < this.selectedDateRange.length; i++) {
-					this.selectedDateRange[i].start = moment(this.selectedDateRange[i].start);
-					this.selectedDateRange[i].end = moment(this.selectedDateRange[i].end);
 					this.selectedDateRange[i] = this.DashboardFilterProvider.processPresetDateRange(this.selectedDateRange[i]);
 					this.obsArr.push(this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[i]));
 				}
@@ -137,18 +156,15 @@ export class DashboardV3Page implements OnInit {
 	}
 
 	addCard() {
-	
 		let addCardModal = this.modalCtrl.create(AddCardModalComponent, {});
 		addCardModal.onDidDismiss(data => {
 			if (data) {
-				for (let i = 0; i < this.selectedDateRange.length; i++) {
-					if (this.selectedDateRange[i].intervalType == data.intervalType && data.intervalType != 11) {
+				for (let i = 0; i < this.selectedDateRange.length; i++)
+					if (this.selectedDateRange[i].intervalType == data.intervalType && data.intervalType != DateRangeType.CustomRange) 
 						return;
-					}
-				}
-				delete data['editedData']; 
+					
 				this.selectedDateRange.push(data);
-				this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
+				this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics, this.productsMetrics, this.metricsHeader);
 				this.DashboardFilterProvider.makeRequest$(this.selectedDateRange[this.selectedDateRange.length - 1])
 				.subscribe(res => {
 					this.stats.push(Stat.fromJSON(res));
@@ -158,25 +174,19 @@ export class DashboardV3Page implements OnInit {
 			}
 		  });
 		  addCardModal.present();
-	
 	}
 
 	editCard(index) {
 			let addCardModal = this.modalCtrl.create(AddCardModalComponent, {data: this.selectedDateRange[index]});
 			addCardModal.onDidDismiss(data => {
 				if (data) {
-					for (let i = 0; i < this.selectedDateRange.length; i++) {
-						if (this.selectedDateRange[i].intervalType == data.intervalType && data.intervalType != 11) {
+					for (let i = 0; i < this.selectedDateRange.length; i++) 
+						if (this.selectedDateRange[i].intervalType == data.intervalType && data.intervalType != DateRangeType.CustomRange) 
 							return;
-						}
-					}
-
-					this.selectedDateRange[index].intervalType = data.intervalType;
-					this.selectedDateRange[index].title = data.title;
-					this.selectedDateRange[index].start = data.start;
-					this.selectedDateRange[index].end = data.end;
 					
-					this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
+					this.selectedDateRange[index] = data;
+					
+					this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics, this.productsMetrics, this.metricsHeader);
 					this.DashboardFilterProvider.makeRequest$(data)
 					.subscribe(res => {
 						res['type'] = this.stats[index].type;
@@ -190,7 +200,6 @@ export class DashboardV3Page implements OnInit {
 				}
 			  });
 			  addCardModal.present();
-		
 		}
 
 
@@ -222,12 +231,7 @@ export class DashboardV3Page implements OnInit {
 			this.removeSlideAfterEdit = false;
 			this.lastEditedSlider = -2;
 		}
-		  //remove the empty slide at the end
-		// if (this.stats[0].title.dateName == "Today" && this.isFirstChartToday == 1) {
-		// 	$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).slick('slickRemove', this.numberOfCardsToday);
-		// 	this.isFirstChartToday = 0;
-		// }
-
+		
 		$('.myCarousel' + this.counterArr[this.counterArr.length - 1]).on("beforeChange", function (event, slick, currentSlide, nextSlide) {
 			if (nextSlide != currentSlide) {
 				that.sendDataToChart(that.stats[nextSlide]);
@@ -238,14 +242,11 @@ export class DashboardV3Page implements OnInit {
 
 		  if (this.counterReset != -1)
 			this.counterReset = -1;
-		 //  this.stats.push(JSON.parse(JSON.stringify(this.stats[0])));
-		 //  this.counterArr.push(this.counterArr[this.counterArr.length - 1] + 1);
 	}
   }
 
 
 	getTitleColor(index) {
-		
 		switch(index) {
 			case 0:
 				return "days1";
@@ -346,7 +347,6 @@ export class DashboardV3Page implements OnInit {
 			});
 
 		this.getProducts();
-
 	}
 
 
@@ -389,7 +389,7 @@ export class DashboardV3Page implements OnInit {
 				metric.isSelected = false;
 			}
 		})
-		this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);
+		this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics, this.productsMetrics, this.metricsHeader);
 	}
 
 	customChartData(startDate, endDate) {
@@ -445,19 +445,8 @@ export class DashboardV3Page implements OnInit {
 			if (this.stats[i] == stat) {
 				this.stats.splice(i, 1);
 				this.selectedDateRange.splice(i, 1);
-				this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics);	
+				this.AppConfigurationsProvider.updateDashboardCards(this.selectedDateRange, this.metrics, this.productsMetrics, this.metricsHeader);	
 				$('.myCarousel' + this.counterArr[this.counterArr.length - 2]).slick('slickRemove', i);
 		}
-	}
-	objectsAreSame(x, y) {
-		var objectsAreSame = true;
-		for(var propertyName in x) {
-		   if(x[propertyName] !== y[propertyName]) {
-			  objectsAreSame = false;
-			  break;
-		   }
-		}
-		return objectsAreSame;
-	 }
-		
+	}		
 }

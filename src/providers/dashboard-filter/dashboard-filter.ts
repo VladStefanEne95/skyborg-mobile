@@ -125,8 +125,11 @@ processCustomRange(range: DateRange): StatsRequestDate[] {
 
 processPresetDateRange(dateRange): DateRange {
 	
-	if (dateRange.intervalType == DateRangeType.CustomRange)
+	if (dateRange.intervalType == DateRangeType.CustomRange) {
+		dateRange.start = moment(dateRange.start);
+		dateRange.end = moment(dateRange.end);
 		return dateRange;
+	}
 	
 	for (let i = 0; i < this.dates.length; i++) {
 		if (dateRange.intervalType == this.dates[i].intervalType)

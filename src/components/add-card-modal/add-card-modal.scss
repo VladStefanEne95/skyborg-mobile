@@ -39,8 +39,11 @@ add-card-modal {
 		width: 200px;
 	}
 	.preset-active {
-		background-color: #2F64CC;
-		color: white;
+		color: #2255C2;
+		background: #EBF0F9;
+		border-radius: 3px;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
 	}
 	.dp-calendar-wrapper,
 	.dp-calendar-nav-container {
