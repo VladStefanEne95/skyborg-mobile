@@ -125,13 +125,15 @@ export class DashboardV3Page implements OnInit {
 				this.selectedDateRange = response['data'].details.cards;
 				this.metricsHeader = response['data'].details.metricsHeader;
 				this.productsMetrics = response['data'].details.productMetrics;
+				this.selectedDateRange.sort((a,b) => (a['intervalType'] - b['intervalType']))
+				// BUG
+				// next line causes a bug when the slider isn't displayed, or slides ar missing, in certain scenarions, like when there are only 2 cards
 				this.metrics = response['data'].details.options;
 				this.metrics.forEach(element => {
 					if (element.isSelected == true) {
 						this.cardOptions.push(element.label)
 					}
 				});	
-				this.selectedDateRange.sort((a,b) => (a['intervalType'] - b['intervalType']))
 
 				for (let i = 0; i < this.selectedDateRange.length; i++) {
 					this.selectedDateRange[i] = this.DashboardFilterProvider.processPresetDateRange(this.selectedDateRange[i]);

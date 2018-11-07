@@ -10,7 +10,10 @@ add-card-modal {
 		background-color: #2F64CC;
 		font-size: 22px;
 	}
-	.preset-column,
+	.preset-column {
+		margin-top: 1.6rem;
+	}
+	h1,
 	.custom-column {
 		margin-top: 0px;
 	}

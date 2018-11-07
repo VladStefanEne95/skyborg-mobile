@@ -104,7 +104,7 @@ export class AddCardModalComponent {
   ngOnInit() {
 	if (this.data) {
 		this.isEdit = true;
-		this.selectedDateRange = cloneDeep(this.data['dateRange']);
+		this.selectedDateRange = cloneDeep(this.data);
 	} else {
 		this.selectedDateRange = cloneDeep(this.dateRanges[0]);
 	}
