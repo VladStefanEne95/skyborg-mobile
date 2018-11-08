@@ -2,7 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { OneSignal } from '@ionic-native/onesignal';
+import { OneSignal, OSNotificationPayload } from '@ionic-native/onesignal';
+import { UserProvider } from '../providers/user/user';
 
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
@@ -24,9 +25,11 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
+
+
   constructor(public platform: Platform, public statusBar: StatusBar,
 	 public splashScreen: SplashScreen, public storage: Storage,
-	 private oneSignal: OneSignal) {
+	 private oneSignal: OneSignal, public userProvider: UserProvider) {
     this.initializeApp();
 
 	// let self = this;
@@ -48,27 +51,34 @@ export class MyApp {
 
   }
 
+  private onPushReceived(payload: OSNotificationPayload) {
+	alert('Push recevied:' + payload.body);
+}
+
+private onPushOpened(payload: OSNotificationPayload) {
+	alert('Push opened: ' + payload.body);
+}
+
   initializeApp() {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
 	  this.splashScreen.hide();
-	  //for app only
-	//   this.oneSignal.startInit('b2f7f966-d8cc-11e4-bed1-df8f05be55ba', '703322744261');
-	  
-	//   this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
-	  
-	//   this.oneSignal.handleNotificationReceived().subscribe(() => {
-	//    // do something when notification is received
-	//   });
-	  
-	//   this.oneSignal.handleNotificationOpened().subscribe(() => {
-	// 	// do something when a notification is opened
-	//   });
-	  
-	//   this.oneSignal.endInit();
-    });
+
+	  if ((<any>window).cordova){
+		this.oneSignal.startInit('e5796dac-1863-4322-ac52-da2ba202bbff', '593294311877');
+		//not sure if get perm returns a promise or the code is sync
+		this.oneSignal.getPermissionSubscriptionState().then(status => {
+			//user provider savedevice method should be called
+			this.userProvider.saveDevice(status.subscriptionStatus.userId);
+		})
+		  this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
+		  this.oneSignal.handleNotificationReceived().subscribe(data => this.onPushReceived(data.payload));
+		  this.oneSignal.handleNotificationOpened().subscribe(data => this.onPushOpened(data.notification.payload));
+		  this.oneSignal.endInit();
+	  }
+	});
   }
 
   openPage(page) {
